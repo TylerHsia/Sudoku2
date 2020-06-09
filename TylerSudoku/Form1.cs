@@ -15,6 +15,8 @@ namespace TylerSudoku
         public Form1()
         {
             InitializeComponent();
+
+            //initialize cells
             for(var i = 0; i < 9; i++)
             {
                 for(var j = 0; j < 9; j++)
@@ -28,54 +30,44 @@ namespace TylerSudoku
                     
                 }
             }
+
+
             this.Height = 550;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             this.Text = "Tyler's Sudoku Helper";
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-           // this.GetNextControl(this.cur, true).Select();
-        }
-
-
-        
+        }   
     }
 
 
     public class MyCellBox : TextBox
     {
         private Form1 form1;
-        private int x;
-        private int y;
-
+        private int xCoord;
+        private int yCoord;
+        //constructor 
         public MyCellBox(Form1 form1, int i, int j)
         {
             this.form1 = form1;
-            this.x = i;
-            this.y = j;
+            this.xCoord = j;
+            this.yCoord = i;
             this.MaxLength = 1;
         }
 
+        //key up event
         protected override void OnKeyUp(KeyEventArgs e)
         {
             var cellArray = form1.Controls.OfType<MyCellBox>().ToList();
 
+            //tab for key up
             base.OnKeyUp(e);
-            if(e.KeyCode > Keys.D0 && e.KeyCode < Keys.D9)
+            if(e.KeyCode > Keys.D0 && e.KeyCode <= Keys.D9)
             {
                 if (this.Text.Length > 0 && isDigit(this.Text))
                 {
-                    if (x == 8 && y == 8)
+                    if (xCoord == 8 && yCoord == 8)
                     {
                         //var array = form1.Controls.OfType<MyCellBox>().ToArray();
                         cellArray[0].Select();
@@ -88,6 +80,8 @@ namespace TylerSudoku
                     }
                 }
             }
+
+            //if not a digit, delete
             if (!isDigit(this.Text) && this.Text.Length > 0)
             {
                 this.BackColor = Color.Red;
@@ -138,18 +132,20 @@ namespace TylerSudoku
             }
         }
 
+        //is a sudoku digit helper method
         public bool isDigit(String input)
         {
-            if(input.Length == 1)
+            for(int i = 1; i<= 9; i++)
             {
-                if(input.Equals("1") || input.Equals("2") || input.Equals("3") || input.Equals("4") || input.Equals("5") || input.Equals("6") || input.Equals("7") || input.Equals("8") || input.Equals("9"))
+                if(input.Equals("" + i))
                 {
                     return true;
                 }
-            }
+            }            
             return false;
         }
 
+        //select all text when click my textbox
         protected override void OnClick(EventArgs e)
         {
             base.OnClick(e);
