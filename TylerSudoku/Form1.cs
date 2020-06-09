@@ -28,7 +28,7 @@ namespace TylerSudoku
                     
                 }
             }
-            
+            this.Height = 550;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -68,7 +68,8 @@ namespace TylerSudoku
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            
+            var cellArray = form1.Controls.OfType<MyCellBox>().ToList();
+
             base.OnKeyUp(e);
             if(e.KeyCode > Keys.D0 && e.KeyCode < Keys.D9)
             {
@@ -76,8 +77,8 @@ namespace TylerSudoku
                 {
                     if (x == 8 && y == 8)
                     {
-                        var array = form1.Controls.OfType<MyCellBox>().ToArray();
-                        array[0].Select();
+                        //var array = form1.Controls.OfType<MyCellBox>().ToArray();
+                        cellArray[0].Select();
                         this.SelectAll();
                     }
                     else
@@ -95,6 +96,45 @@ namespace TylerSudoku
             if(isDigit(this.Text) || this.Text.Length == 0)
             {
                 this.BackColor = Color.White;
+            }
+
+            //arrow keys
+            if(e.KeyCode == Keys.Right)
+            {
+                if (cellArray.IndexOf(this) != 80)
+                {
+                    form1.GetNextControl(this, true).Select();
+                    this.SelectAll();
+                }
+            }
+            if(e.KeyCode == Keys.Left)
+            {
+                if(cellArray.IndexOf(this) != 0)
+                {
+                    form1.GetNextControl(this, false).Select();
+                    this.SelectAll();
+                }
+                
+            }
+            if(e.KeyCode == Keys.Up)
+            {
+                var array = form1.Controls.OfType<MyCellBox>().ToList();
+                int nextLocation = array.IndexOf(this) - 9;
+                if(nextLocation > 0)
+                {
+                    array[nextLocation].Select();
+                }
+                this.SelectAll();
+            }
+            if (e.KeyCode == Keys.Down)
+            {
+                
+                int nextLocation = cellArray.IndexOf(this) + 9;
+                if (nextLocation < 81)
+                {
+                    cellArray[nextLocation].Select();
+                }
+                this.SelectAll();
             }
         }
 
