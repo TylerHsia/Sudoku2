@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,10 +28,31 @@ namespace TylerSudoku
                     newCell.Left = 100 + j * 33;
                     newCell.Top = 100 + i * 33;
                     this.Controls.Add(newCell);
-                    
                 }
             }
 
+            //initialize displays
+            for(var i = 0; i < 9; i++)
+            {
+                var newCell = new myDisplayBox(this);
+                newCell.Width = 20;
+                newCell.Height = 30;
+                newCell.Left = 100 + i * 33 + 5;
+                newCell.Top = 67 + 5;
+                this.Controls.Add(newCell);
+                newCell.Text = "" + (i + 1);
+
+                String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+                var newCell2 = new myDisplayBox(this);
+                newCell2.Width = 20;
+                newCell2.Height = 30;
+                newCell2.Top = 100 + i * 33;
+                newCell2.Left = 67 + 5;
+                this.Controls.Add(newCell2);
+                newCell2.Text = alphabet.Substring(i, 1);
+            }
+            
 
             this.Height = 550;
         }
@@ -38,7 +60,38 @@ namespace TylerSudoku
         private void Form1_Load(object sender, EventArgs e)
         {
             this.Text = "Tyler's Sudoku Helper";
+            
+            
         }   
+
+        private void Form1_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+        {
+            Pen pen = new Pen(Color.FromArgb(255, 0, 0, 0));
+            e.Graphics.DrawLine(pen, 100, 193, 392, 193);
+            e.Graphics.DrawLine(pen, 20, 10, 300, 100);
+            e.Graphics.DrawLine(pen, 20, 10, 300, 100);
+            e.Graphics.DrawLine(pen, 20, 10, 300, 100);
+
+
+            pen.Dispose();
+        }
+
+        
+
+        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        //clears all cells
+        private void ClearAll_Click(object sender, EventArgs e)
+        {
+            var cellArray = this.Controls.OfType<MyCellBox>().ToList();
+            for(int i = 0; i < cellArray.Count; i++)
+            {
+                cellArray[i].Text = "";
+            }
+        }
     }
 
 
@@ -63,10 +116,13 @@ namespace TylerSudoku
 
             //tab for key up
             base.OnKeyUp(e);
-            if(e.KeyCode > Keys.D0 && e.KeyCode <= Keys.D9)
+            //if num 1 - 9
+            if(e.KeyCode > Keys.D0 && e.KeyCode <= Keys.D9 || e.KeyCode > Keys.NumPad0 && e.KeyCode <= Keys.NumPad9)
             {
-                if (this.Text.Length > 0 && isDigit(this.Text))
+                //if text is digit
+                if (isDigit(this.Text))
                 {
+                    //if last cell, tab to top
                     if (xCoord == 8 && yCoord == 8)
                     {
                         //var array = form1.Controls.OfType<MyCellBox>().ToArray();
@@ -75,6 +131,7 @@ namespace TylerSudoku
                     }
                     else
                     {
+                        //tab forward
                         form1.GetNextControl(this, true).Select();
                         this.SelectAll();
                     }
@@ -84,15 +141,16 @@ namespace TylerSudoku
             //if not a digit, delete
             if (!isDigit(this.Text) && this.Text.Length > 0)
             {
-                this.BackColor = Color.Red;
+                //this.BackColor = Color.Red;
                 this.Text = "";
             }
             if(isDigit(this.Text) || this.Text.Length == 0)
             {
-                this.BackColor = Color.White;
+                //this.BackColor = Color.White;
             }
 
-            //arrow keys
+            //arrow key
+            //right
             if(e.KeyCode == Keys.Right)
             {
                 if (cellArray.IndexOf(this) != 80)
@@ -101,6 +159,7 @@ namespace TylerSudoku
                     this.SelectAll();
                 }
             }
+            //left
             if(e.KeyCode == Keys.Left)
             {
                 if(cellArray.IndexOf(this) != 0)
@@ -110,6 +169,7 @@ namespace TylerSudoku
                 }
                 
             }
+            //up
             if(e.KeyCode == Keys.Up)
             {
                 var array = form1.Controls.OfType<MyCellBox>().ToList();
@@ -120,6 +180,7 @@ namespace TylerSudoku
                 }
                 this.SelectAll();
             }
+            //down
             if (e.KeyCode == Keys.Down)
             {
                 
@@ -150,6 +211,23 @@ namespace TylerSudoku
         {
             base.OnClick(e);
             this.SelectAll();
+        }
+    }
+
+    public class myDisplayBox : TextBox
+    {
+        private Form1 form1;
+        //constructor
+        public myDisplayBox(Form1 form1)
+        {
+            this.form1 = form1;
+            //this.ForeColor = Color.Red; //System.Drawing.SystemColors.MenuHighlight;
+            this.ReadOnly = true;
+            this.TabStop = false;
+            this.HideSelection = true;
+            this.Enabled = false;
+            this.BackColor = Color.FromArgb(87, 160, 211);
+            
         }
     }
 }
