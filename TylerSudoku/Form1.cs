@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SudokuLogic;
 
 namespace TylerSudoku
 {
@@ -16,6 +17,8 @@ namespace TylerSudoku
         public Form1()
         {
             InitializeComponent();
+            var x = new SudokuLogic.Class1();
+            var y = x.helloTest();
 
             //initialize cells
             for(var i = 0; i < 9; i++)
