@@ -18,7 +18,10 @@ namespace TylerSudoku
         {
             InitializeComponent();
             var x = new SudokuLogic.Class1();
-            var y = x.helloTest();
+            var y = x.HelloTest();
+            var sudokuSolver = new SudokuSolver();
+
+            this.textBox1.Text = sudokuSolver.ReturnsHello();
 
             //initialize cells
             for(var i = 0; i < 9; i++)
