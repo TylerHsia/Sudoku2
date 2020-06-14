@@ -29,5 +29,11 @@ namespace TestProject
             var result = await y.GetAsync(targetURL);
             TestContext.WriteLine(result.Content.ToString());
         }
+
+        [TestMethod]
+        public void CheckAllStoredLogic()
+        {
+
+        }
     }
 }
