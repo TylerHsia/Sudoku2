@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SudokuLogic;
@@ -15,6 +17,53 @@ namespace TestProject
 
 
         public TestContext TestContext { get; set; }
+
+        [TestMethod]
+        public void testFoobar()
+        {
+            var x = new SudokuGrid();
+            var y = x.ToString();
+
+        }
+
+        class SudokuGrid
+        {
+            sudokCell[,] grid;
+            public SudokuGrid()
+            {
+                grid = new sudokCell[9, 9];
+                for (int row = 0; row < 9; row++)
+                {
+                    for (int column = 0; column < 9; column++)
+                    {
+                        grid[row, column] = new sudokCell();
+                    }
+                }
+            }
+            public override string ToString()
+            {
+                var sb = new StringBuilder();
+                for (int row = 0; row < 9; row++)
+                {
+                    for (int column = 0; column < 9; column++)
+                    {
+                        if (false)
+                        {
+                            sb.Append(grid[row, column].toString());
+                        }
+                        else
+                        {
+                            sb.Append(grid[row, column].toStringWithoutCands());
+                            //sb.Append("0");
+                        }
+                    }
+                    sb.AppendLine();
+                }
+                return sb.ToString();
+            }
+
+        }
+
         [TestMethod]
         public void TestMethod1()
         {
