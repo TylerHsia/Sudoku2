@@ -100,11 +100,17 @@ namespace TestProject
                     TestContext.WriteLine("More work on " + i);
                     TestContext.WriteLine("Num unsolved is " + sudokuSolver.numUnsolved(mySudoku));
                 }
+                //if there was a duplicate in row, column, or box
+                if (sudokuSolver.InvalidMove(mySudoku))
+                {
+                    TestContext.WriteLine("Invalid move on " + i);
+                }
             }
             if (solvedAll)
             {
                 TestContext.WriteLine("All solved");
             }
+            
             Assert.IsTrue(solvedAll, "Not all solved");
         }
 

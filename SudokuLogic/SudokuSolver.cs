@@ -1,4 +1,5 @@
-﻿using System;
+﻿using javax.swing;
+using System;
 using System.Collections.Generic;
 
 namespace SudokuLogic
@@ -1274,10 +1275,56 @@ namespace SudokuLogic
         public bool InvalidMove(sudokCell[,] mySudoku)
         {
             //check columns for duplicates 
+            for(int column = 0; column < 9; column++)
+            {
+                List<int> myList = new List<int>();
+                for (int row = 0; row < 9; row++)
+                { 
+                    myList.Add(mySudoku[row, column].getVal());
+                }
+                if (ContainsDuplicate(myList))
+                {
+                    return true;
+                }
+            }
 
             //check rows for duplicates
+            for(int row = 0; row < 9; row++)
+            {
+                List<int> myList = new List<int>();
+                for (int column = 0; column < 9; column++)
+                {
+                    myList.Add(mySudoku[row, column].getVal());
+                }
+                if (ContainsDuplicate(myList))
+                {
+                    return true;
+                }
+            }
 
             //check boxes for duplicates
+
+            //for box coords
+            for(int boxRow = 0; boxRow < 3; boxRow++)
+            {
+                for (int boxColumn = 0; boxColumn < 3; boxColumn++)
+                {
+                    List<int> myList = new List<int>();
+                    //for each row in the small box
+                    for (int row = boxRow * 3; row < boxRow * 3 + 3; row++)
+                    {
+                        //for each column in the small box
+                        for (int column = boxColumn * 3; column < boxColumn * 3 + 3; column++)
+                        {
+                            myList.Add(mySudoku[row, column].getVal());
+                        }
+                    }
+                    if (ContainsDuplicate(myList))
+                    {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
 
