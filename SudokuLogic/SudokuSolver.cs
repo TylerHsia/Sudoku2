@@ -1270,6 +1270,38 @@ namespace SudokuLogic
         }
 
 
+        //checks if an invalid move has been made
+        public bool InvalidMove(sudokCell[,] mySudoku)
+        {
+            //check columns for duplicates 
+
+            //check rows for duplicates
+
+            //check boxes for duplicates
+            return false;
+        }
+
+        //checks if a List contains a duplicate ovre the domain [1, 9]
+        public bool ContainsDuplicate(List<int> myList)
+        {
+            List<int> results = new List<int>();
+            for(int i = 1; i <= 9; i++)
+            {
+                results = myList.FindAll(
+                delegate (int bk)
+                {
+                    return bk == i;
+                }
+                );
+
+                if (results.Count > 1)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 
 

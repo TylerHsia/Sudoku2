@@ -44,6 +44,29 @@ namespace TestProject
         }
 
         [TestMethod]
+        public void CheckContainsDuplicateMethod()
+        {
+            int[] x1 = { 1, 2, 3, 4 };
+            List<int> list1 = new List<int>(x1);
+
+            int[] x2 = { 1, 1, 2, 3 };
+            List<int> list2 = new List<int>(x2);
+
+            int[] x3 = { 1, 5, 2, 3, 9, 8, 4, 7, 6 };
+            List<int> list3 = new List<int>(x3);
+
+            int[] x4 = { 1, 5, 6, 3, 9, 8, 4, 7, 6 };
+            List<int> list4 = new List<int>(x4);
+
+            SudokuLogic.SudokuSolver sudokuSolver = new SudokuSolver();
+
+            Assert.IsFalse(sudokuSolver.ContainsDuplicate(list1), "1 wrong");
+            Assert.IsTrue(sudokuSolver.ContainsDuplicate(list2), "2 wrong");
+            Assert.IsFalse(sudokuSolver.ContainsDuplicate(list3), "3 wrong");
+            Assert.IsTrue(sudokuSolver.ContainsDuplicate(list4), "4 wrong ");
+        }
+
+        [TestMethod]
         public void CheckAllStoredLogic()
         {
 
