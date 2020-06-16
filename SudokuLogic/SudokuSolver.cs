@@ -1,5 +1,4 @@
-﻿using java.lang;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace SudokuLogic
@@ -13,9 +12,9 @@ namespace SudokuLogic
         }
 
         //eliminates by rook method
-        public bool rookChecker(sudokCell[,] mySudoku)
+        public bool RookChecker(sudokCell[,] mySudoku)
         {
-            bool checkerMethodOneWorks = false;
+            bool RookCheckerWorks = false;
 
             //two for loops to go through each element in mySudoku
             for (int row = 0; row < 9; row++)
@@ -38,9 +37,11 @@ namespace SudokuLogic
                                 if (index != -1)
                                 {
                                     mySudoku[row2,column].remove(index);
-                                    checkerMethodOneWorks = true;
-                                    checkerMethodOneWorks = rookChecker(mySudoku);
-                                    checkerMethodOneWorks = boxChecker(mySudoku);
+                                    //checkerMethodOneWorks = true;
+                                    //checkerMethodOneWorks = 
+                                    RookChecker(mySudoku);
+                                    //checkerMethodOneWorks = 
+                                    BoxChecker(mySudoku);
                                 }
                             }
                         }
@@ -58,20 +59,22 @@ namespace SudokuLogic
                                 {
                                     mySudoku[row,column2].remove(index);
 
-                                    checkerMethodOneWorks = true;
-                                    checkerMethodOneWorks = rookChecker(mySudoku);
-                                    checkerMethodOneWorks = boxChecker(mySudoku);
+                                    //checkerMethodOneWorks = true;
+                                    //RookCheckerWorks = 
+                                    RookChecker(mySudoku);
+                                    //RookCheckerWorks = 
+                                    BoxChecker(mySudoku);
                                 }
                             }
                         }
                     }
                 }
             }
-            return checkerMethodOneWorks;
+            return RookCheckerWorks;
         }
 
         //eliminates by checking 3 by 3 boxes
-        public  bool boxChecker(sudokCell[,] mySudoku)
+        public  bool BoxChecker(sudokCell[,] mySudoku)
         {
             bool boxCheckerWorks = false;
 
@@ -101,9 +104,11 @@ namespace SudokuLogic
                                     if (index != -1)
                                     {
                                         mySudoku[row2,column2].remove(index);
-                                        boxCheckerWorks = true;
-                                        boxCheckerWorks = boxChecker(mySudoku);
-                                        boxCheckerWorks = rookChecker(mySudoku);
+                                        //boxCheckerWorks = true;
+                                        //boxCheckerWorks = 
+                                        BoxChecker(mySudoku);
+                                        //boxCheckerWorks = 
+                                        RookChecker(mySudoku);
                                     }
                                 }
                             }
@@ -115,7 +120,7 @@ namespace SudokuLogic
         }
 
         //check if candidate is only candidate in one spot in a row or column
-        public  bool onlyCandidateLeftRookChecker(sudokCell[,] mySudoku)
+        public  bool OnlyCandidateLeftRookChecker(sudokCell[,] mySudoku)
         {
             bool onlyCandidateLeftRookCheckerWorks = false;
             //check each column
@@ -143,10 +148,10 @@ namespace SudokuLogic
                     if (num == 1)
                     {
                         mySudoku[index,column].solve(i);
-                        rookChecker(mySudoku);
-                        boxChecker(mySudoku);
+                        RookChecker(mySudoku);
+                        BoxChecker(mySudoku);
                         onlyCandidateLeftRookCheckerWorks = true;
-                        onlyCandidateLeftRookCheckerWorks = onlyCandidateLeftBoxChecker(mySudoku);
+                        //onlyCandidateLeftRookCheckerWorks = OnlyCandidateLeftBoxChecker(mySudoku);
                     }
                 }
             }
@@ -176,9 +181,9 @@ namespace SudokuLogic
                     {
                         mySudoku[row,index].solve(i);
                         onlyCandidateLeftRookCheckerWorks = true;
-                        rookChecker(mySudoku);
-                        boxChecker(mySudoku);
-                        onlyCandidateLeftRookCheckerWorks = onlyCandidateLeftBoxChecker(mySudoku);
+                        RookChecker(mySudoku);
+                        BoxChecker(mySudoku);
+                        //onlyCandidateLeftRookCheckerWorks = OnlyCandidateLeftBoxChecker(mySudoku);
                     }
                 }
             }
@@ -188,9 +193,9 @@ namespace SudokuLogic
 
 
         //check if candidate is only candidate in one spot in a box
-        public  bool onlyCandidateLeftBoxChecker(sudokCell[,] mySudoku)
+        public  bool OnlyCandidateLeftBoxChecker(sudokCell[,] mySudoku)
         {
-            bool onlyCandidateLeftBoxCheckerWorks = false;
+            bool OnlyCandidateLeftBoxCheckerWorks = false;
             //for each box row
             for (int boxRow = 0; boxRow < 3; boxRow++)
             {
@@ -226,19 +231,19 @@ namespace SudokuLogic
                         if (num == 1)
                         {
                             mySudoku[rowIndex,columnIndex].solve(i);
-                            rookChecker(mySudoku);
-                            boxChecker(mySudoku);
-                            onlyCandidateLeftBoxCheckerWorks = true;
-                            onlyCandidateLeftBoxCheckerWorks = onlyCandidateLeftBoxChecker(mySudoku);
+                            RookChecker(mySudoku);
+                            BoxChecker(mySudoku);
+                            OnlyCandidateLeftBoxCheckerWorks = true;
+                            OnlyCandidateLeftBoxChecker(mySudoku);
                         }
                     }
                 }
             }
-            return onlyCandidateLeftBoxCheckerWorks;
+            return OnlyCandidateLeftBoxCheckerWorks;
         }
 
         //checks for 2 boxes that have only 2 candidates in a column or row, eliminates those candidates from that column OR row 
-        public  bool nakedCandidateRookChecker(sudokCell[,] mySudoku)
+        public  bool NakedCandidateRookChecker(sudokCell[,] mySudoku)
         {
             bool candidatePairRookCheckerWorks = false;
             //two for loops to go through each element in mySudoku
@@ -279,9 +284,11 @@ namespace SudokuLogic
                                     }
                                 }
                             }
-                            candidatePairRookCheckerWorks = true;
-                            candidatePairRookCheckerWorks = rookChecker(mySudoku);
-                            candidatePairRookCheckerWorks = boxChecker(mySudoku);
+                            //candidatePairRookCheckerWorks = true;
+                            //candidatePairRookCheckerWorks = 
+                            RookChecker(mySudoku);
+                            //candidatePairRookCheckerWorks = 
+                            BoxChecker(mySudoku);
                         }
 
 
@@ -315,8 +322,10 @@ namespace SudokuLogic
                                 }
                             }
                             candidatePairRookCheckerWorks = true;
-                            candidatePairRookCheckerWorks = rookChecker(mySudoku);
-                            candidatePairRookCheckerWorks = boxChecker(mySudoku);
+                            //candidatePairRookCheckerWorks = 
+                            RookChecker(mySudoku);
+                            //candidatePairRookCheckerWorks = 
+                            BoxChecker(mySudoku);
                         }
                     }
                 }
@@ -325,7 +334,7 @@ namespace SudokuLogic
         }
 
         //checks for 2 boxes that have only 2 candidates in a box, eliminates those candidates from that box 
-        public bool nakedCandidateBoxChecker(sudokCell[,] mySudoku)
+        public bool NakedCandidateBoxChecker(sudokCell[,] mySudoku)
         {
             bool candidatePairBoxCheckerWorks = false;
             //two for loops to go through each element in mySudoku
@@ -393,8 +402,10 @@ namespace SudokuLogic
                                 }
                             }
                             candidatePairBoxCheckerWorks = true;
-                            candidatePairBoxCheckerWorks = rookChecker(mySudoku);
-                            candidatePairBoxCheckerWorks = boxChecker(mySudoku);
+                            //candidatePairBoxCheckerWorks = 
+                            RookChecker(mySudoku);
+                            //candidatePairBoxCheckerWorks = 
+                            BoxChecker(mySudoku);
                         }
                     }
                 }
@@ -403,7 +414,7 @@ namespace SudokuLogic
         }
 
         //checks for hidden candidate sets and removes candidates from those 
-        public bool hiddenCandidatePairChecker(sudokCell[,] mySudoku)
+        public bool HiddenCandidatePairChecker(sudokCell[,] mySudoku)
         {
             bool hiddenCandidatePairCheckerWorks = false;
             //find in a row
@@ -463,14 +474,14 @@ namespace SudokuLogic
                                             if (mySudoku[row,kColumnCoord1].contains(j))
                                             {
                                                 mySudoku[row,kColumnCoord1].remove(mySudoku[row,kColumnCoord1].indexOf(j));
-                                                rookChecker(mySudoku);
-                                                boxChecker(mySudoku);
+                                                RookChecker(mySudoku);
+                                                BoxChecker(mySudoku);
                                             }
                                             if (mySudoku[row,kColumnCoord2].contains(j))
                                             {
                                                 mySudoku[row,kColumnCoord2].remove(mySudoku[row,kColumnCoord2].indexOf(j));
-                                                rookChecker(mySudoku);
-                                                boxChecker(mySudoku);
+                                                RookChecker(mySudoku);
+                                                BoxChecker(mySudoku);
                                             }
                                         }
                                     }
@@ -538,14 +549,14 @@ namespace SudokuLogic
                                             if (mySudoku[kRowCoord1,column].contains(j))
                                             {
                                                 mySudoku[kRowCoord1,column].remove(mySudoku[kRowCoord1,column].indexOf(j));
-                                                rookChecker(mySudoku);
-                                                boxChecker(mySudoku);
+                                                RookChecker(mySudoku);
+                                                BoxChecker(mySudoku);
                                             }
                                             if (mySudoku[kRowCoord2,column].contains(j))
                                             {
                                                 mySudoku[kRowCoord2,column].remove(mySudoku[kRowCoord2,column].indexOf(j));
-                                                rookChecker(mySudoku);
-                                                boxChecker(mySudoku);
+                                                RookChecker(mySudoku);
+                                                BoxChecker(mySudoku);
                                             }
                                         }
                                     }
@@ -635,14 +646,14 @@ namespace SudokuLogic
                                                 if (mySudoku[kRowCoord1,kColumnCoord1].contains(j))
                                                 {
                                                     mySudoku[kRowCoord1,kColumnCoord1].remove(mySudoku[kRowCoord1,kColumnCoord1].indexOf(j));
-                                                    rookChecker(mySudoku);
-                                                    boxChecker(mySudoku);
+                                                    RookChecker(mySudoku);
+                                                    BoxChecker(mySudoku);
                                                 }
                                                 if (mySudoku[kRowCoord2,kColumnCoord2].contains(j))
                                                 {
                                                     mySudoku[kRowCoord2,kColumnCoord2].remove(mySudoku[kRowCoord2,kColumnCoord2].indexOf(j));
-                                                    rookChecker(mySudoku);
-                                                    boxChecker(mySudoku);
+                                                    RookChecker(mySudoku);
+                                                    BoxChecker(mySudoku);
                                                 }
                                             }
                                         }
@@ -659,13 +670,13 @@ namespace SudokuLogic
 
 
         //method for hiddenCandidateChecker, takes in array list, finds the hidden candidates, returns them in an arraylist
-        public List<int> findHiddenCandidatesPair(List<sudokCell> candidateSet)
+        public List<int> FindHiddenCandidatesPair(List<sudokCell> candidateSet)
         {
             return new List<int>();
         }
 
         //method for candidate lines (only place in a box where candidate must go is in a line, eliminate candidate from that line outside the box)
-        public bool candidateLinesChecker(sudokCell[,] mySudoku)
+        public bool CandidateLinesChecker(sudokCell[,] mySudoku)
         {
             bool candidateLinesCheckerWorks = false;
             //for each big box
@@ -782,8 +793,8 @@ namespace SudokuLogic
                             if (removedACandidate)
                             {
                                 candidateLinesCheckerWorks = true;
-                                candidateLinesCheckerWorks = boxChecker(mySudoku);
-                                candidateLinesCheckerWorks = rookChecker(mySudoku);
+                                candidateLinesCheckerWorks = BoxChecker(mySudoku);
+                                candidateLinesCheckerWorks = RookChecker(mySudoku);
                             }
                         }
                     }
@@ -840,8 +851,8 @@ namespace SudokuLogic
                                             if (mySudoku[row2,column2].contains(i))
                                             {
                                                 mySudoku[row2,column2].remove(mySudoku[row2,column2].indexOf(i));
-                                                rookChecker(mySudoku);
-                                                boxChecker(mySudoku);
+                                                RookChecker(mySudoku);
+                                                BoxChecker(mySudoku);
                                             }
                                         }
                                     }
@@ -874,8 +885,8 @@ namespace SudokuLogic
                                             if (mySudoku[row2,column2].contains(i))
                                             {
                                                 mySudoku[row2,column2].remove(mySudoku[row2,column2].indexOf(i));
-                                                rookChecker(mySudoku);
-                                                boxChecker(mySudoku);
+                                                RookChecker(mySudoku);
+                                                BoxChecker(mySudoku);
                                             }
                                         }
                                     }
@@ -931,8 +942,8 @@ namespace SudokuLogic
                                             if (mySudoku[row2,column2].contains(i))
                                             {
                                                 mySudoku[row2,column2].remove(mySudoku[row2,column2].indexOf(i));
-                                                rookChecker(mySudoku);
-                                                boxChecker(mySudoku);
+                                                RookChecker(mySudoku);
+                                                BoxChecker(mySudoku);
                                             }
                                         }
                                     }
@@ -965,8 +976,8 @@ namespace SudokuLogic
                                             if (mySudoku[row2,column2].contains(i))
                                             {
                                                 mySudoku[row2,column2].remove(mySudoku[row2,column2].indexOf(i));
-                                                rookChecker(mySudoku);
-                                                boxChecker(mySudoku);
+                                                RookChecker(mySudoku);
+                                                BoxChecker(mySudoku);
                                             }
                                         }
                                     }
@@ -1101,14 +1112,14 @@ namespace SudokuLogic
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    rookChecker(mySudoku);
-                    boxChecker(mySudoku);
-                    onlyCandidateLeftRookChecker(mySudoku);
-                    onlyCandidateLeftBoxChecker(mySudoku);
-                    nakedCandidateRookChecker(mySudoku);
-                    nakedCandidateBoxChecker(mySudoku);
-                    candidateLinesChecker(mySudoku);
-                    hiddenCandidatePairChecker(mySudoku);
+                    RookChecker(mySudoku);
+                    BoxChecker(mySudoku);
+                    OnlyCandidateLeftRookChecker(mySudoku);
+                    OnlyCandidateLeftBoxChecker(mySudoku);
+                    NakedCandidateRookChecker(mySudoku);
+                    NakedCandidateBoxChecker(mySudoku);
+                    CandidateLinesChecker(mySudoku);
+                    HiddenCandidatePairChecker(mySudoku);
                     pointingPairRookToBoxChecker(mySudoku);
 
                     //System.out.println("HeHe");
@@ -1123,11 +1134,11 @@ namespace SudokuLogic
 
             bool forcingChainsCheckerWorks = false;
 
-            forcingChainsCheckerWorks = forcingChainsChecker(mySudoku);
+            //forcingChainsCheckerWorks = forcingChainsChecker(mySudoku);
 
             if (forcingChainsCheckerWorks)
             {
-                solveForForcingChains(mySudoku);
+                //solveForForcingChains(mySudoku);
             }
             return false;
         }
@@ -1226,6 +1237,38 @@ namespace SudokuLogic
             return numUnsolvedB;
         }
 
+        //solve method
+        public void Solve(sudokCell[,] mySudoku, bool forcingChains)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                RookChecker(mySudoku);
+                BoxChecker(mySudoku);
+                OnlyCandidateLeftRookChecker(mySudoku);
+                OnlyCandidateLeftBoxChecker(mySudoku);
+                NakedCandidateRookChecker(mySudoku);
+                NakedCandidateBoxChecker(mySudoku);
+                CandidateLinesChecker(mySudoku);
+                HiddenCandidatePairChecker(mySudoku);
+                pointingPairRookToBoxChecker(mySudoku);
+
+                //System.out.println("HeHe");
+            }
+            bool forcingChainsCheckerWorks = false;
+            if (forcingChains)
+            {
+                forcingChainsCheckerWorks = forcingChainsChecker(mySudoku);
+            }
+            if (forcingChainsCheckerWorks)
+            {
+                Solve(mySudoku, true);
+            }
+            /*if(bruteForce && !solved(mySudoku, false)){
+                System.out.println("multiple guesses");
+                bruteForceSolver(mySudoku);
+            }*/
+        }
+
 
     }
 
@@ -1249,17 +1292,10 @@ namespace SudokuLogic
                 possibles.Add(value);
                 solved = true;
             }
-
-
-            
+         
 
 
         }
-
-
-
-
-
 
         public sudokCell()
         {
@@ -1292,9 +1328,6 @@ namespace SudokuLogic
             //to be commented out
             bool toPrint = false;
 
-
-
-
             possibles.RemoveAt(toRemove);
             if (possibles.Count == 1)
             {
@@ -1307,7 +1340,7 @@ namespace SudokuLogic
                 //System.out.println("Removed all possibilities, my null pointer exception");
                 toPrint = true;
                 
-                throw new NullPointerException("Cell has zero candidates");
+                throw new InvalidOperationException("Cell has zero candidates");
             }
             return toPrint;
         }

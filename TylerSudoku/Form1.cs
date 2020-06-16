@@ -40,7 +40,7 @@ namespace TylerSudoku
             //initialize displays
             for(var i = 0; i < 9; i++)
             {
-                var newCell = new myDisplayBox(this);
+                var newCell = new MyDisplayBox(this);
                 newCell.Width = 20;
                 newCell.Height = 30;
                 newCell.Left = 100 + i * 33 + 5;
@@ -50,7 +50,7 @@ namespace TylerSudoku
 
                 String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-                var newCell2 = new myDisplayBox(this);
+                var newCell2 = new MyDisplayBox(this);
                 newCell2.Width = 20;
                 newCell2.Height = 30;
                 newCell2.Top = 100 + i * 33;
@@ -84,7 +84,7 @@ namespace TylerSudoku
 
         
 
-        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        private void TextBox1_TextChanged_1(object sender, EventArgs e)
         {
 
         }
@@ -220,11 +220,11 @@ namespace TylerSudoku
         }
     }
 
-    public class myDisplayBox : TextBox
+    public class MyDisplayBox : TextBox
     {
         private Form1 form1;
         //constructor
-        public myDisplayBox(Form1 form1)
+        public MyDisplayBox(Form1 form1)
         {
             this.form1 = form1;
             //this.ForeColor = Color.Red; //System.Drawing.SystemColors.MenuHighlight;

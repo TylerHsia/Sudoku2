@@ -61,6 +61,10 @@
       <Project>{acca5e17-6e37-46c6-bafd-8d1985dee8a5}</Project>
       <Name>SudokuLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TylerSudoku\TylerSudoku.csproj">
+      <Project>{7df4ab1b-0f82-4f71-9e6a-c578ebfe239e}</Project>
+      <Name>TylerSudoku</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
