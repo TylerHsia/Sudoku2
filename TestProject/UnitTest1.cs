@@ -26,43 +26,7 @@ namespace TestProject
 
         }
 
-        class SudokuGrid
-        {
-            sudokCell[,] grid;
-            public SudokuGrid()
-            {
-                grid = new sudokCell[9, 9];
-                for (int row = 0; row < 9; row++)
-                {
-                    for (int column = 0; column < 9; column++)
-                    {
-                        grid[row, column] = new sudokCell();
-                    }
-                }
-            }
-            public override string ToString()
-            {
-                var sb = new StringBuilder();
-                for (int row = 0; row < 9; row++)
-                {
-                    for (int column = 0; column < 9; column++)
-                    {
-                        if (false)
-                        {
-                            sb.Append(grid[row, column].toString());
-                        }
-                        else
-                        {
-                            sb.Append(grid[row, column].toStringWithoutCands());
-                            //sb.Append("0");
-                        }
-                    }
-                    sb.AppendLine();
-                }
-                return sb.ToString();
-            }
-
-        }
+        
 
         [TestMethod]
         public void TestMethod1()
@@ -116,10 +80,25 @@ namespace TestProject
         }
 
         [TestMethod]
+        public void TestSudokuGridCopier()
+        {
+            SudokuLogic.SudokuSolver sudokuSolver = new SudokuLogic.SudokuSolver();
+            SudokuGrid myGrid = new SudokuGrid();
+            myGrid = FromIntArray(input(1));
+            SudokuGrid myGrid2 = sudokuSolver.Copy(myGrid);
+            Assert.IsTrue(myGrid.ToString().Equals(myGrid2.ToString()));
+
+            myGrid2[2, 3].solve(2);
+            myGrid[2, 3].solve(3);
+            Assert.IsFalse(myGrid.ToString().Equals(myGrid2.ToString()));
+        }
+
+        [TestMethod]
         public void CheckAllStoredLogic()
         {
 
             bool solvedAll = true;
+            //1 to 23, inclusive
             for (int i = 1; i <= 23; i++)
             {
                 SudokuLogic.SudokuSolver sudokuSolver = new SudokuLogic.SudokuSolver();
@@ -127,7 +106,7 @@ namespace TestProject
                 //inputted sudoku
                 int[,] sudokuInputted = input(i);
 
-                sudokCell[,] mySudoku = new sudokCell[9, 9];
+                SudokuGrid mySudoku = new SudokuGrid();
 
                 //my sudoku to be worked with
                 for (int row = 0; row < 9; row++)
@@ -161,6 +140,22 @@ namespace TestProject
             }
             
             Assert.IsTrue(solvedAll, "Not all solved");
+        }
+
+        //converts int array to sudokcell sudokugrid
+        public SudokuGrid FromIntArray(int[,] myArray)
+        {
+            SudokuGrid mySudoku = new SudokuGrid();
+            //my sudoku to be worked with
+            for (int row = 0; row < 9; row++)
+            {
+                for (int column = 0; column < 9; column++)
+                {
+                    mySudoku[row, column] = new sudokCell(myArray[row, column]);
+                }
+            }
+
+            return mySudoku;
         }
 
         //gives sudoku from list of possibles

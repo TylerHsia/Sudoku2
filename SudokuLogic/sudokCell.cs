@@ -37,7 +37,7 @@ namespace SudokuLogic
         }
         public sudokCell(sudokCell obj)
         {
-            obj = new sudokCell(obj.getPossibles(), obj.getSolved());
+            new sudokCell(obj.getPossibles(), obj.getSolved());
         }
         public sudokCell(List<int> possibles, bool solved)
         {
@@ -46,6 +46,25 @@ namespace SudokuLogic
                 this.possibles.Add(possibles[i]);
             }
             this.solved = solved;
+        }
+
+        public sudokCell(List<int> possibles)
+        {
+            for (int i = 0; i < possibles.Count; i++)
+            {
+                this.possibles.Add(possibles[i]);
+            }
+            this.solved = false;
+        }
+
+        public sudokCell Clone(sudokCell myCell)
+        {
+            if(myCell.solved)
+            {
+                return new sudokCell(myCell.getVal());
+            }
+
+            return new sudokCell(myCell.getPossibles());
         }
 
         public int indexOf(int val)
@@ -118,7 +137,7 @@ namespace SudokuLogic
             }
         }
 
-        public string toString()
+        public string ToString()
         {
             string toReturn = "";
             if (solved)

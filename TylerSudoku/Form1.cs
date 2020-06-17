@@ -17,11 +17,9 @@ namespace TylerSudoku
         public Form1()
         {
             InitializeComponent();
-            var x = new SudokuLogic.Class1();
-            var y = x.HelloTest();
             var sudokuSolver = new SudokuSolver();
 
-            this.textBox1.Text = sudokuSolver.ReturnsHello();
+            
 
             //initialize cells
             for(var i = 0; i < 9; i++)
@@ -61,6 +59,11 @@ namespace TylerSudoku
             
 
             this.Height = 550;
+
+
+            Button newButton = new Button(this);
+            
+
         }
 
         private void Form1_Load(object sender, EventArgs e)

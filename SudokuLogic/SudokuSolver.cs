@@ -1,5 +1,4 @@
-﻿using javax.swing;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace SudokuLogic
@@ -7,13 +6,10 @@ namespace SudokuLogic
 
     public class SudokuSolver
     {
-        public string ReturnsHello()
-        {
-            return "hello";
-        }
+        
 
         //eliminates by rook method
-        public bool RookChecker(sudokCell[,] mySudoku)
+        public bool RookChecker(SudokuGrid mySudoku)
         {
             bool RookCheckerWorks = false;
 
@@ -75,7 +71,7 @@ namespace SudokuLogic
         }
 
         //eliminates by checking 3 by 3 boxes
-        public  bool BoxChecker(sudokCell[,] mySudoku)
+        public  bool BoxChecker(SudokuGrid mySudoku)
         {
             bool boxCheckerWorks = false;
 
@@ -121,7 +117,7 @@ namespace SudokuLogic
         }
 
         //check if candidate is only candidate in one spot in a row or column
-        public  bool OnlyCandidateLeftRookChecker(sudokCell[,] mySudoku)
+        public  bool OnlyCandidateLeftRookChecker(SudokuGrid mySudoku)
         {
             bool onlyCandidateLeftRookCheckerWorks = false;
             //check each column
@@ -194,7 +190,7 @@ namespace SudokuLogic
 
 
         //check if candidate is only candidate in one spot in a box
-        public  bool OnlyCandidateLeftBoxChecker(sudokCell[,] mySudoku)
+        public  bool OnlyCandidateLeftBoxChecker(SudokuGrid mySudoku)
         {
             bool OnlyCandidateLeftBoxCheckerWorks = false;
             //for each box row
@@ -244,7 +240,7 @@ namespace SudokuLogic
         }
 
         //checks for 2 boxes that have only 2 candidates in a column or row, eliminates those candidates from that column OR row 
-        public  bool NakedCandidateRookChecker(sudokCell[,] mySudoku)
+        public  bool NakedCandidateRookChecker(SudokuGrid mySudoku)
         {
             bool candidatePairRookCheckerWorks = false;
             //two for loops to go through each element in mySudoku
@@ -335,7 +331,7 @@ namespace SudokuLogic
         }
 
         //checks for 2 boxes that have only 2 candidates in a box, eliminates those candidates from that box 
-        public bool NakedCandidateBoxChecker(sudokCell[,] mySudoku)
+        public bool NakedCandidateBoxChecker(SudokuGrid mySudoku)
         {
             bool candidatePairBoxCheckerWorks = false;
             //two for loops to go through each element in mySudoku
@@ -415,7 +411,7 @@ namespace SudokuLogic
         }
 
         //checks for hidden candidate sets and removes candidates from those 
-        public bool HiddenCandidatePairChecker(sudokCell[,] mySudoku)
+        public bool HiddenCandidatePairChecker(SudokuGrid mySudoku)
         {
             bool hiddenCandidatePairCheckerWorks = false;
             //find in a row
@@ -677,7 +673,7 @@ namespace SudokuLogic
         }
 
         //method for candidate lines (only place in a box where candidate must go is in a line, eliminate candidate from that line outside the box)
-        public bool CandidateLinesChecker(sudokCell[,] mySudoku)
+        public bool CandidateLinesChecker(SudokuGrid mySudoku)
         {
             bool candidateLinesCheckerWorks = false;
             //for each big box
@@ -804,7 +800,7 @@ namespace SudokuLogic
             return candidateLinesCheckerWorks;
         }
 
-        public bool pointingPairRookToBoxChecker(sudokCell[,] mySudoku)
+        public bool pointingPairRookToBoxChecker(SudokuGrid mySudoku)
         {
             bool pointingPairRookToBoxWorks = false;
             //check rows
@@ -994,7 +990,7 @@ namespace SudokuLogic
         }
 
         //forcing chains checker
-        public bool forcingChainsChecker(sudokCell[,] mySudoku)
+        public bool forcingChainsChecker(SudokuGrid mySudoku)
         {
             //System.out.println("I was called");
             bool forcingChainsCheckerWorks = false;
@@ -1003,10 +999,13 @@ namespace SudokuLogic
             {
                 for (int column = 0; column < 9; column++)
                 {
+                    //if unsolved
                     if (!mySudoku[row,column].getSolved())
                     {
                         //setup 
                         int numCands = mySudoku[row,column].getPossibles().Count;
+
+                        //bool array, set initially to true if the corresponding cell is unsolved
                         bool[,] sameSolved = new bool[9,9];
                         for (int solvedRow = 0; solvedRow < 9; solvedRow++)
                         {
@@ -1021,8 +1020,10 @@ namespace SudokuLogic
                         }
 
                         //first guess
-                        sudokCell[,] copy1 = Copy(mySudoku);
+                        SudokuGrid copy1 = Copy(mySudoku);
+
                         copy1[row,column].solve(mySudoku[row,column].getPossibles()[0]);
+
                         if (solveForForcingChains(copy1))
                         {
                             mySudoku[row,column].remove(mySudoku[row,column].indexOf(mySudoku[row,column].getPossibles()[0]));
@@ -1048,7 +1049,7 @@ namespace SudokuLogic
                         //all other guesses 
                         for (int candidateIndex = 1; candidateIndex < numCands; candidateIndex++)
                         {
-                            sudokCell[,] copy = Copy(mySudoku);
+                            SudokuGrid copy = Copy(mySudoku);
                             copy[row,column].solve(mySudoku[row,column].getPossibles()[candidateIndex]);
                             if (solveForForcingChains(copy))
                             {
@@ -1107,7 +1108,7 @@ namespace SudokuLogic
         }
 
         //solve method for hidden candidate copies 
-        public bool solveForForcingChains(sudokCell[,] mySudoku)
+        public bool solveForForcingChains(SudokuGrid mySudoku)
         {
             try
             {
@@ -1145,15 +1146,18 @@ namespace SudokuLogic
         }
 
         //make a copy of values
-        public sudokCell[,] Copy(sudokCell[,] mySudoku)
+        public SudokuGrid Copy(SudokuGrid mySudoku)
         {
-            sudokCell[,] mySudoku2 = new sudokCell[9,9];
+
+            SudokuGrid mySudoku2 = new SudokuGrid();
             for (int row = 0; row < 9; row++)
             {
                 for (int column = 0; column < 9; column++)
                 {
+                    sudokCell sudokCell = new sudokCell();
                     sudokCell x = mySudoku[row,column];
-                    mySudoku2[row,column] = new sudokCell(x);
+                    mySudoku2[row,column] = sudokCell.Clone(x);
+                    
                 }
             }
             return mySudoku2;
@@ -1161,7 +1165,7 @@ namespace SudokuLogic
 
 
         //check if the sudoku is solved
-        public bool solved(sudokCell[,] mySudoku, bool printChecks)
+        public bool solved(SudokuGrid mySudoku, bool printChecks)
         {
             //two for loops to go through each row, check adds to 45
             for (int row = 0; row < 9; row++)
@@ -1220,7 +1224,7 @@ namespace SudokuLogic
         }
 
         //check how many boxes remain unsolved
-        public int numUnsolved(sudokCell[,] mySudoku)
+        public int numUnsolved(SudokuGrid mySudoku)
         {
             int numUnsolvedB = 81;
             //for each solved cell in main array
@@ -1239,7 +1243,7 @@ namespace SudokuLogic
         }
 
         //solve method
-        public void Solve(sudokCell[,] mySudoku, bool forcingChains)
+        public void Solve(SudokuGrid mySudoku, bool forcingChains)
         {
             for (int i = 0; i < 10; i++)
             {
@@ -1272,7 +1276,7 @@ namespace SudokuLogic
 
 
         //checks if an invalid move has been made
-        public bool InvalidMove(sudokCell[,] mySudoku)
+        public bool InvalidMove(SudokuGrid mySudoku)
         {
             //check columns for duplicates 
             for(int column = 0; column < 9; column++)
@@ -1353,14 +1357,7 @@ namespace SudokuLogic
 
 
 
-    public class Class1
-    {
-        public string HelloTest()
-        {
-            return $"the date is {DateTime.Now}";
-            var x = new SudokuGrid();
-        }
-    }
+ 
 
     
     
