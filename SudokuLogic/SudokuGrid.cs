@@ -88,7 +88,7 @@ namespace SudokuLogic
             bool solvedOne = false;
 
             SudokuGrid copy1 = sudokuSolver.Copy(this);
-            sudokuSolver.bruteForceSolver(copy1);
+            sudokuSolver.bruteForceSolver(ref copy1);
 
             if (!sudokuSolver.solved(copy1))
             {
@@ -112,7 +112,7 @@ namespace SudokuLogic
                             copy[row, column].solve(this[row, column].getPossibles()[i]);
 
                             //brute force it
-                            sudokuSolver.bruteForceSolver(copy);
+                            sudokuSolver.bruteForceSolver(ref copy);
                             bool solvedThisOne = sudokuSolver.solved(copy);
                             //if this one and another were solved, invalid for too many
                             if(solvedThisOne && solvedOne)

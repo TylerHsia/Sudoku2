@@ -199,7 +199,7 @@ namespace TestProject
             }
 
 
-            sudokuSolver.bruteForceSolver(mySudoku);
+            sudokuSolver.bruteForceSolver(ref mySudoku);
             Assert.IsTrue(sudokuSolver.solved(mySudoku), "Brute force did not solve it");
 
             

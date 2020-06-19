@@ -1395,7 +1395,7 @@ namespace SudokuLogic
             return false;
         }
 
-        public String bruteForceSolver(SudokuGrid mySudoku)
+        public String bruteForceSolver(ref SudokuGrid mySudoku)
         {
             if (solved(mySudoku))
             {
@@ -1439,7 +1439,7 @@ namespace SudokuLogic
                                 }
                                 catch 
                                 {
-                                    
+                                    return "Mistake Made";
                                 }
                                 //bruteForceSolver(mySudoku);
                                 //return "";
@@ -1452,10 +1452,21 @@ namespace SudokuLogic
                                 //bruteForceSolver(mySudoku);
                                 //return "";
                             }
-                            else
+                            else //guess again
                             {
                                 //brute force it
-                                bruteForceSolver(copy);
+                                if(bruteForceSolver(ref copy).Equals("Mistake Made"))
+                                {
+                                    mySudoku[row, column].RemoveAt(i);
+                                    i--;
+                                    solveForBruteForce(mySudoku);
+                                    
+                                }
+                                else if (solved(copy))
+                                {
+                                    mySudoku = Copy(copy);
+                                    return "solved";
+                                }
                                 //return "Valid moves, still not solved";
                             }
                         }
@@ -1548,7 +1559,7 @@ namespace SudokuLogic
                     if (numUnsolved(testCase) == 0 && !solved(testCase, false))
                     {
                         //System.out.println("restarted brute force");
-                        bruteForceSolver(mySudoku);
+                        bruteForceSolver(ref mySudoku);
                     }
 
                     for (int j = 0; j < 10; j++)
@@ -1583,7 +1594,7 @@ namespace SudokuLogic
                     if (numUnsolved(testCase) == 0 && !solved(testCase, false))
                     {
                         //System.out.println("restarted brute force");
-                        bruteForceSolver(mySudoku);
+                        bruteForceSolver(ref mySudoku);
                     }
                 }
             }
