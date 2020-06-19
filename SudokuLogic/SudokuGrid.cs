@@ -72,13 +72,42 @@ namespace SudokuLogic
             SudokuSolver sudokuSolver = new SudokuSolver();
 
             sudokuSolver.BoxChecker(this);
-
+            //if simple solve, return is valid
             if (sudokuSolver.solved(this))
             {
                 return true;
             }
-            
-            return true;
+
+            bool solvedOne = false;
+            //else, guess all possibles and brute force solve. if multiple solutions, return false
+            for(int row = 0; row < 9; row++)
+            {
+                for (int column = 0; column < 9; column++)
+                {
+                    //if unsolved
+                    if (!this[row, column].getSolved())
+                    {
+                        for(int i = 0; i < this[row, column].getPossibles().Count; i++)
+                        {
+                            sudokuSolver.bruteForceSolver(this);
+                            bool solvedThisOne = sudokuSolver.solved(this);
+                            //if this one and another were solved, invalid
+                            if(solvedThisOne && solvedOne)
+                            {
+                                return false;
+                            }
+                            //if this one is solved, solved one
+                            if (solvedThisOne && !solvedOne)
+                            {
+                                solvedOne = true;
+                            }
+                            
+                        }
+                    }
+                }
+            }
+            //if none of the guesses worked, return false
+            return false;
         }
 
         public void SolveForIsValid()
