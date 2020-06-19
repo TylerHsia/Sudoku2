@@ -72,7 +72,7 @@ namespace SudokuLogic
             return possibles.IndexOf(val);
         }
         //removes a candidate 
-        public bool remove(int toRemove)
+        public bool RemoveAt(int toRemove)
         {
 
             //to be commented out

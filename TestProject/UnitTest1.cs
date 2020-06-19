@@ -42,7 +42,7 @@ namespace TestProject
             ////Assert.Fail(y);
             SudokuLogic.sudokCell sudokCell = new SudokuLogic.sudokCell();
             sudokCell newCell = new sudokCell(0);
-            newCell.remove(0);
+            newCell.RemoveAt(0);
 
 
         }
@@ -184,7 +184,7 @@ namespace TestProject
         [TestMethod]
         public void TestBruteForceChecker()
         {
-
+            SudokuSolver sudokuSolver = new SudokuSolver();
 
             //need to check 5, 9, 12, 13
             SudokuGrid mySudoku = new SudokuGrid();
@@ -199,9 +199,13 @@ namespace TestProject
             }
 
 
+            sudokuSolver.bruteForceSolver(mySudoku);
+            Assert.IsTrue(sudokuSolver.solved(mySudoku), "Brute force did not solve it");
+
             
         }
 
+        /*
         [TestMethod]
         public void OverFlowException()
         {
@@ -214,6 +218,7 @@ namespace TestProject
         {
             Recursion();
         }
+        */
 
         //gives sudoku from list of possibles
         public static int[,] input(int x)

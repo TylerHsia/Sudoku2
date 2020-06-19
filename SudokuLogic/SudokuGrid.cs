@@ -49,6 +49,7 @@ namespace SudokuLogic
         public override string ToString()
         {
             var sb = new StringBuilder();
+            sb.AppendLine();
             for (int row = 0; row < 9; row++)
             {
                 for (int column = 0; column < 9; column++)
@@ -161,9 +162,6 @@ namespace SudokuLogic
                 sudokuSolver.NakedCandidateRookChecker(this);
                 sudokuSolver.NakedCandidateBoxChecker(this);
                 sudokuSolver.CandidateLinesChecker(this);
-
-
-                //System.out.println("HeHe");
             }
             
 

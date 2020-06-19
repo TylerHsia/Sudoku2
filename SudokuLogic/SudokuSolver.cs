@@ -6,7 +6,7 @@ namespace SudokuLogic
 
     public class SudokuSolver
     {
-        
+
 
         //eliminates by rook method
         public bool RookChecker(SudokuGrid mySudoku)
@@ -19,21 +19,21 @@ namespace SudokuLogic
                 for (int column = 0; column < 9; column++)
                 {
                     //if that element is solved
-                    if (mySudoku[row,column].getSolved())
+                    if (mySudoku[row, column].getSolved())
                     {
                         //for each other element in the row
                         for (int row2 = 0; row2 < 9; row2++)
                         {
                             //if the other element is not solved
-                            if (!mySudoku[row2,column].getSolved())
+                            if (!mySudoku[row2, column].getSolved())
                             {
                                 //index is index of the solved value in not solved element 
-                                int index = mySudoku[row2,column].indexOf(mySudoku[row,column].getVal());
+                                int index = mySudoku[row2, column].indexOf(mySudoku[row, column].getVal());
 
                                 //if not solved element has solved value 
                                 if (index != -1)
                                 {
-                                    mySudoku[row2,column].remove(index);
+                                    mySudoku[row2, column].RemoveAt(index);
                                     //checkerMethodOneWorks = true;
                                     //checkerMethodOneWorks = 
                                     RookChecker(mySudoku);
@@ -46,15 +46,15 @@ namespace SudokuLogic
                         for (int column2 = 0; column2 < 9; column2++)
                         {
                             //if the other element is not solved
-                            if (!mySudoku[row,column2].getSolved())
+                            if (!mySudoku[row, column2].getSolved())
                             {
                                 //index is index of the solved value in not solved element 
-                                int index = mySudoku[row,column2].indexOf(mySudoku[row,column].getVal());
+                                int index = mySudoku[row, column2].indexOf(mySudoku[row, column].getVal());
 
                                 //if not solved element has solved value 
                                 if (index != -1)
                                 {
-                                    mySudoku[row,column2].remove(index);
+                                    mySudoku[row, column2].RemoveAt(index);
 
                                     //checkerMethodOneWorks = true;
                                     //RookCheckerWorks = 
@@ -71,7 +71,7 @@ namespace SudokuLogic
         }
 
         //eliminates by checking 3 by 3 boxes
-        public  bool BoxChecker(SudokuGrid mySudoku)
+        public bool BoxChecker(SudokuGrid mySudoku)
         {
             bool boxCheckerWorks = false;
 
@@ -81,7 +81,7 @@ namespace SudokuLogic
                 for (int column = 0; column < 9; column++)
                 {
                     //if that element is solved
-                    if (mySudoku[row,column].getSolved())
+                    if (mySudoku[row, column].getSolved())
                     {
                         int boxColumn = column / 3;
                         int boxRow = row / 3;
@@ -93,14 +93,14 @@ namespace SudokuLogic
                             for (int column2 = boxColumn * 3; column2 < boxColumn * 3 + 3; column2++)
                             {
                                 //if the other element is not solved
-                                if (!mySudoku[row2,column2].getSolved())
+                                if (!mySudoku[row2, column2].getSolved())
                                 {
                                     //index is index of the solved value in not solved element 
-                                    int index = mySudoku[row2,column2].indexOf(mySudoku[row,column].getVal());
+                                    int index = mySudoku[row2, column2].indexOf(mySudoku[row, column].getVal());
 
                                     if (index != -1)
                                     {
-                                        mySudoku[row2,column2].remove(index);
+                                        mySudoku[row2, column2].RemoveAt(index);
                                         //boxCheckerWorks = true;
                                         //boxCheckerWorks = 
                                         BoxChecker(mySudoku);
@@ -117,7 +117,7 @@ namespace SudokuLogic
         }
 
         //check if candidate is only candidate in one spot in a row or column
-        public  bool OnlyCandidateLeftRookChecker(SudokuGrid mySudoku)
+        public bool OnlyCandidateLeftRookChecker(SudokuGrid mySudoku)
         {
             bool onlyCandidateLeftRookCheckerWorks = false;
             //check each column
@@ -132,10 +132,10 @@ namespace SudokuLogic
                     for (int row = 0; row < 9; row++)
                     {
                         //if not solved
-                        if (!mySudoku[row,column].getSolved())
+                        if (!mySudoku[row, column].getSolved())
                         {
 
-                            if (mySudoku[row,column].contains(i))
+                            if (mySudoku[row, column].contains(i))
                             {
                                 num++;
                                 index = row;
@@ -144,7 +144,7 @@ namespace SudokuLogic
                     }
                     if (num == 1)
                     {
-                        mySudoku[index,column].solve(i);
+                        mySudoku[index, column].solve(i);
                         RookChecker(mySudoku);
                         BoxChecker(mySudoku);
                         onlyCandidateLeftRookCheckerWorks = true;
@@ -165,9 +165,9 @@ namespace SudokuLogic
                     for (int column = 0; column < 9; column++)
                     {
                         //if not solved
-                        if (!mySudoku[row,column].getSolved())
+                        if (!mySudoku[row, column].getSolved())
                         {
-                            if (mySudoku[row,column].contains(i))
+                            if (mySudoku[row, column].contains(i))
                             {
                                 num++;
                                 index = column;
@@ -176,7 +176,7 @@ namespace SudokuLogic
                     }
                     if (num == 1)
                     {
-                        mySudoku[row,index].solve(i);
+                        mySudoku[row, index].solve(i);
                         onlyCandidateLeftRookCheckerWorks = true;
                         RookChecker(mySudoku);
                         BoxChecker(mySudoku);
@@ -190,7 +190,7 @@ namespace SudokuLogic
 
 
         //check if candidate is only candidate in one spot in a box
-        public  bool OnlyCandidateLeftBoxChecker(SudokuGrid mySudoku)
+        public bool OnlyCandidateLeftBoxChecker(SudokuGrid mySudoku)
         {
             bool OnlyCandidateLeftBoxCheckerWorks = false;
             //for each box row
@@ -212,10 +212,10 @@ namespace SudokuLogic
                             for (int column2 = boxColumn * 3; column2 < boxColumn * 3 + 3; column2++)
                             {
                                 //if the element is not solved
-                                if (!mySudoku[row2,column2].getSolved())
+                                if (!mySudoku[row2, column2].getSolved())
                                 {
                                     //if it contains i
-                                    if (mySudoku[row2,column2].contains(i))
+                                    if (mySudoku[row2, column2].contains(i))
                                     {
                                         num++;
                                         rowIndex = row2;
@@ -227,7 +227,7 @@ namespace SudokuLogic
                         //if only one cell in the box has that candidate, solve it 
                         if (num == 1)
                         {
-                            mySudoku[rowIndex,columnIndex].solve(i);
+                            mySudoku[rowIndex, columnIndex].solve(i);
                             RookChecker(mySudoku);
                             BoxChecker(mySudoku);
                             OnlyCandidateLeftBoxCheckerWorks = true;
@@ -240,7 +240,7 @@ namespace SudokuLogic
         }
 
         //checks for 2 boxes that have only 2 candidates in a column or row, eliminates those candidates from that column OR row 
-        public  bool NakedCandidateRookChecker(SudokuGrid mySudoku)
+        public bool NakedCandidateRookChecker(SudokuGrid mySudoku)
         {
             bool candidatePairRookCheckerWorks = false;
             //two for loops to go through each element in mySudoku
@@ -249,7 +249,7 @@ namespace SudokuLogic
                 for (int column = 0; column < 9; column++)
                 {
                     //if that element is unsolved 
-                    if (!mySudoku[row,column].getSolved())
+                    if (!mySudoku[row, column].getSolved())
                     {
                         //for each other element in the column
                         int numSame = 0;
@@ -258,25 +258,25 @@ namespace SudokuLogic
                         for (int row2 = 0; row2 < 9; row2++)
                         {
                             //if the other element has same candidates
-                            if (mySudoku[row2,column].samePossible(mySudoku[row,column]))
+                            if (mySudoku[row2, column].samePossible(mySudoku[row, column]))
                             {
                                 numSame++;
                                 rowVals.Add(row2);
                             }
                         }
                         //if the number of cells with same possibles equals number of possibles per cell
-                        if (numSame == mySudoku[row,column].size())
+                        if (numSame == mySudoku[row, column].size())
                         {
                             //for each other element in the column
                             for (int row2 = 0; row2 < 9; row2++)
                             {
                                 if (!rowVals.Contains(row2))
                                 {
-                                    for (int possibleIndex = 0; possibleIndex < mySudoku[row,column].size(); possibleIndex++)
+                                    for (int possibleIndex = 0; possibleIndex < mySudoku[row, column].size(); possibleIndex++)
                                     {
-                                        if (mySudoku[row2,column].indexOf(mySudoku[row,column].getVal(possibleIndex)) != -1)
+                                        if (mySudoku[row2, column].indexOf(mySudoku[row, column].getVal(possibleIndex)) != -1)
                                         {
-                                            mySudoku[row2,column].remove(mySudoku[row2,column].indexOf(mySudoku[row,column].getVal(possibleIndex)));
+                                            mySudoku[row2, column].RemoveAt(mySudoku[row2, column].indexOf(mySudoku[row, column].getVal(possibleIndex)));
                                         }
                                     }
                                 }
@@ -295,25 +295,25 @@ namespace SudokuLogic
                         for (int column2 = 0; column2 < 9; column2++)
                         {
                             //if the other element is not solved 
-                            if (mySudoku[row,column2].samePossible(mySudoku[row,column2]))
+                            if (mySudoku[row, column2].samePossible(mySudoku[row, column2]))
                             {
                                 numSame++;
                                 columnVals.Add(column2);
                             }
                         }
                         //if the number of cells with same possibles equals number of possibles per cell
-                        if (numSame == mySudoku[row,column].size())
+                        if (numSame == mySudoku[row, column].size())
                         {
                             //for each other element in that row
                             for (int column2 = 0; column2 < 9; column2++)
                             {
                                 if (!columnVals.Contains(column2))
                                 {
-                                    for (int possibleIndex = 0; possibleIndex < mySudoku[row,column].size(); possibleIndex++)
+                                    for (int possibleIndex = 0; possibleIndex < mySudoku[row, column].size(); possibleIndex++)
                                     {
-                                        if (mySudoku[row,column2].indexOf(mySudoku[row,column].getVal(possibleIndex)) != -1)
+                                        if (mySudoku[row, column2].indexOf(mySudoku[row, column].getVal(possibleIndex)) != -1)
                                         {
-                                            mySudoku[row,column2].remove(mySudoku[row,column2].indexOf(mySudoku[row,column].getVal(possibleIndex)));
+                                            mySudoku[row, column2].RemoveAt(mySudoku[row, column2].indexOf(mySudoku[row, column].getVal(possibleIndex)));
                                         }
                                     }
                                 }
@@ -340,7 +340,7 @@ namespace SudokuLogic
                 for (int column = 0; column < 9; column++)
                 {
                     //if that element is unsolved 
-                    if (!mySudoku[row,column].getSolved())
+                    if (!mySudoku[row, column].getSolved())
                     {
                         int numSame = 0;
                         List<int> rowVals = new List<int>();
@@ -357,10 +357,10 @@ namespace SudokuLogic
                             for (int column2 = boxColumn * 3; column2 < boxColumn * 3 + 3; column2++)
                             {
                                 //if the element is not solved
-                                if (!mySudoku[row2,column2].getSolved())
+                                if (!mySudoku[row2, column2].getSolved())
                                 {
                                     //if it has same possibles
-                                    if (mySudoku[row2,column2].samePossible(mySudoku[row,column]))
+                                    if (mySudoku[row2, column2].samePossible(mySudoku[row, column]))
                                     {
                                         numSame++;
                                         rowVals.Add(row2);
@@ -371,7 +371,7 @@ namespace SudokuLogic
                         }
 
                         //if the number of cells with same possibles equals number of possibles per cell
-                        if (numSame == mySudoku[row,column].size())
+                        if (numSame == mySudoku[row, column].size())
                         {
 
                             //for each other element in that box
@@ -385,14 +385,14 @@ namespace SudokuLogic
                                     if (!columnVals.Contains(column2) || !rowVals.Contains(row2))
                                     {
 
-                                        for (int possibleIndex = 0; possibleIndex < mySudoku[row,column].size(); possibleIndex++)
+                                        for (int possibleIndex = 0; possibleIndex < mySudoku[row, column].size(); possibleIndex++)
                                         {
                                             //if the other cell Contains that possibility
-                                            if (mySudoku[row2,column2].contains(mySudoku[row,column].getVal(possibleIndex)))
+                                            if (mySudoku[row2, column2].contains(mySudoku[row, column].getVal(possibleIndex)))
                                             {
                                                 //remove that possibility from the other cell
                                                 //printBoard(mySudoku, true);
-                                                mySudoku[row2,column2].remove(mySudoku[row2,column2].indexOf(mySudoku[row,column].getVal(possibleIndex)));
+                                                mySudoku[row2, column2].RemoveAt(mySudoku[row2, column2].indexOf(mySudoku[row, column].getVal(possibleIndex)));
                                             }
                                         }
                                     }
@@ -428,7 +428,7 @@ namespace SudokuLogic
                     for (int column = 0; column < 9; column++)
                     {
                         //if that cell contains the candidate
-                        if (mySudoku[row,column].contains(i))
+                        if (mySudoku[row, column].contains(i))
                         {
                             iColumnCoord2 = iColumnCoord1;
                             iColumnCoord1 = column;
@@ -448,7 +448,7 @@ namespace SudokuLogic
                             for (int column = 0; column < 9; column++)
                             {
                                 //if that cell contains the candidate
-                                if (mySudoku[row,column].contains(k))
+                                if (mySudoku[row, column].contains(k))
                                 {
                                     kColumnCoord2 = kColumnCoord1;
                                     kColumnCoord1 = column;
@@ -468,15 +468,15 @@ namespace SudokuLogic
                                         if (j != i && j != k)
                                         {
                                             //removal
-                                            if (mySudoku[row,kColumnCoord1].contains(j))
+                                            if (mySudoku[row, kColumnCoord1].contains(j))
                                             {
-                                                mySudoku[row,kColumnCoord1].remove(mySudoku[row,kColumnCoord1].indexOf(j));
+                                                mySudoku[row, kColumnCoord1].RemoveAt(mySudoku[row, kColumnCoord1].indexOf(j));
                                                 RookChecker(mySudoku);
                                                 BoxChecker(mySudoku);
                                             }
-                                            if (mySudoku[row,kColumnCoord2].contains(j))
+                                            if (mySudoku[row, kColumnCoord2].contains(j))
                                             {
-                                                mySudoku[row,kColumnCoord2].remove(mySudoku[row,kColumnCoord2].indexOf(j));
+                                                mySudoku[row, kColumnCoord2].RemoveAt(mySudoku[row, kColumnCoord2].indexOf(j));
                                                 RookChecker(mySudoku);
                                                 BoxChecker(mySudoku);
                                             }
@@ -503,7 +503,7 @@ namespace SudokuLogic
                     for (int row = 0; row < 9; row++)
                     {
                         //if that cell contains the candidate
-                        if (mySudoku[row,column].contains(i))
+                        if (mySudoku[row, column].contains(i))
                         {
                             iRowCoord2 = iRowCoord1;
                             iRowCoord1 = row;
@@ -523,7 +523,7 @@ namespace SudokuLogic
                             for (int row = 0; row < 9; row++)
                             {
                                 //if that cell contains the candidate
-                                if (mySudoku[row,column].contains(k))
+                                if (mySudoku[row, column].contains(k))
                                 {
                                     kRowCoord2 = kRowCoord1;
                                     kRowCoord1 = row;
@@ -543,15 +543,15 @@ namespace SudokuLogic
                                         if (j != i && j != k)
                                         {
                                             //removal
-                                            if (mySudoku[kRowCoord1,column].contains(j))
+                                            if (mySudoku[kRowCoord1, column].contains(j))
                                             {
-                                                mySudoku[kRowCoord1,column].remove(mySudoku[kRowCoord1,column].indexOf(j));
+                                                mySudoku[kRowCoord1, column].RemoveAt(mySudoku[kRowCoord1, column].indexOf(j));
                                                 RookChecker(mySudoku);
                                                 BoxChecker(mySudoku);
                                             }
-                                            if (mySudoku[kRowCoord2,column].contains(j))
+                                            if (mySudoku[kRowCoord2, column].contains(j))
                                             {
-                                                mySudoku[kRowCoord2,column].remove(mySudoku[kRowCoord2,column].indexOf(j));
+                                                mySudoku[kRowCoord2, column].RemoveAt(mySudoku[kRowCoord2, column].indexOf(j));
                                                 RookChecker(mySudoku);
                                                 BoxChecker(mySudoku);
                                             }
@@ -587,7 +587,7 @@ namespace SudokuLogic
                             for (int column = boxColumn * 3; column < boxColumn * 3 + 3; column++)
                             {
                                 //if that cell contains the candidate
-                                if (mySudoku[row,column].contains(i))
+                                if (mySudoku[row, column].contains(i))
                                 {
                                     iRowCoord2 = iRowCoord1;
                                     iRowCoord1 = row;
@@ -617,7 +617,7 @@ namespace SudokuLogic
                                     for (int column = boxColumn * 3; column < boxColumn * 3 + 3; column++)
                                     {
                                         //if that cell contains the candidate
-                                        if (mySudoku[row,column].contains(k))
+                                        if (mySudoku[row, column].contains(k))
                                         {
                                             kRowCoord2 = iRowCoord1;
                                             kRowCoord1 = row;
@@ -640,15 +640,15 @@ namespace SudokuLogic
                                             if (j != i && j != k)
                                             {
                                                 //removal
-                                                if (mySudoku[kRowCoord1,kColumnCoord1].contains(j))
+                                                if (mySudoku[kRowCoord1, kColumnCoord1].contains(j))
                                                 {
-                                                    mySudoku[kRowCoord1,kColumnCoord1].remove(mySudoku[kRowCoord1,kColumnCoord1].indexOf(j));
+                                                    mySudoku[kRowCoord1, kColumnCoord1].RemoveAt(mySudoku[kRowCoord1, kColumnCoord1].indexOf(j));
                                                     RookChecker(mySudoku);
                                                     BoxChecker(mySudoku);
                                                 }
-                                                if (mySudoku[kRowCoord2,kColumnCoord2].contains(j))
+                                                if (mySudoku[kRowCoord2, kColumnCoord2].contains(j))
                                                 {
-                                                    mySudoku[kRowCoord2,kColumnCoord2].remove(mySudoku[kRowCoord2,kColumnCoord2].indexOf(j));
+                                                    mySudoku[kRowCoord2, kColumnCoord2].RemoveAt(mySudoku[kRowCoord2, kColumnCoord2].indexOf(j));
                                                     RookChecker(mySudoku);
                                                     BoxChecker(mySudoku);
                                                 }
@@ -696,10 +696,10 @@ namespace SudokuLogic
                             for (int column2 = boxColumn * 3; column2 < boxColumn * 3 + 3; column2++)
                             {
                                 //if the element is not solved
-                                if (!mySudoku[row2,column2].getSolved())
+                                if (!mySudoku[row2, column2].getSolved())
                                 {
                                     //if it contains the candidate integer
-                                    if (mySudoku[row2,column2].contains(i))
+                                    if (mySudoku[row2, column2].contains(i))
                                     {
                                         numHasCandidate++;
                                         rowVals.Add(row2);
@@ -738,10 +738,10 @@ namespace SudokuLogic
                                     if (!columnVals.Contains(column2))
                                     {
                                         //if it contains the candidate
-                                        if (mySudoku[rowVals[0],column2].contains(i))
+                                        if (mySudoku[rowVals[0], column2].contains(i))
                                         {
                                             //remove that candidate
-                                            mySudoku[rowVals[0],column2].remove(mySudoku[rowVals[0],column2].indexOf(i));
+                                            mySudoku[rowVals[0], column2].RemoveAt(mySudoku[rowVals[0], column2].indexOf(i));
                                             removedACandidate = true;
                                         }
                                     }
@@ -777,10 +777,10 @@ namespace SudokuLogic
                                     if (!rowVals.Contains(row2))
                                     {
                                         //if it contains the candidate
-                                        if (mySudoku[row2,columnVals[0]].contains(i))
+                                        if (mySudoku[row2, columnVals[0]].contains(i))
                                         {
                                             //remove that candidate
-                                            mySudoku[row2,columnVals[0]].remove(mySudoku[row2,columnVals[0]].indexOf(i));
+                                            mySudoku[row2, columnVals[0]].RemoveAt(mySudoku[row2, columnVals[0]].indexOf(i));
                                             removedACandidate = true;
                                         }
                                     }
@@ -816,7 +816,7 @@ namespace SudokuLogic
 
                     for (int column = 0; column < 9; column++)
                     {
-                        if (mySudoku[row,column].contains(i))
+                        if (mySudoku[row, column].contains(i))
                         {
                             columnCoord1 = columnCoord2;
                             columnCoord2 = columnCoord3;
@@ -842,12 +842,12 @@ namespace SudokuLogic
                                     //if none of the three 
                                     if (!(columnCoord1 == column2 && row == row2) && !(columnCoord2 == column2 && row == row2) && !(columnCoord3 == column2 && row == row2))
                                     {
-                                        if (!mySudoku[row2,column2].getSolved())
+                                        if (!mySudoku[row2, column2].getSolved())
                                         {
                                             //remove i
-                                            if (mySudoku[row2,column2].contains(i))
+                                            if (mySudoku[row2, column2].contains(i))
                                             {
-                                                mySudoku[row2,column2].remove(mySudoku[row2,column2].indexOf(i));
+                                                mySudoku[row2, column2].RemoveAt(mySudoku[row2, column2].indexOf(i));
                                                 RookChecker(mySudoku);
                                                 BoxChecker(mySudoku);
                                             }
@@ -876,12 +876,12 @@ namespace SudokuLogic
                                     if (!(columnCoord2 == column2 && row == row2) && !(columnCoord3 == column2 && row == row2))
                                     {
                                         //if other cell is not solved
-                                        if (!mySudoku[row2,column2].getSolved())
+                                        if (!mySudoku[row2, column2].getSolved())
                                         {
                                             //remove i
-                                            if (mySudoku[row2,column2].contains(i))
+                                            if (mySudoku[row2, column2].contains(i))
                                             {
-                                                mySudoku[row2,column2].remove(mySudoku[row2,column2].indexOf(i));
+                                                mySudoku[row2, column2].RemoveAt(mySudoku[row2, column2].indexOf(i));
                                                 RookChecker(mySudoku);
                                                 BoxChecker(mySudoku);
                                             }
@@ -907,7 +907,7 @@ namespace SudokuLogic
 
                     for (int row = 0; row < 9; row++)
                     {
-                        if (mySudoku[row,column].contains(i))
+                        if (mySudoku[row, column].contains(i))
                         {
                             rowCoord1 = rowCoord2;
                             rowCoord2 = rowCoord3;
@@ -933,12 +933,12 @@ namespace SudokuLogic
                                     //if none of the three 
                                     if (!(rowCoord1 == row2 && column == column2) && !(rowCoord2 == row2 && column == column2) && !(rowCoord3 == row2 && column == column2))
                                     {
-                                        if (!mySudoku[row2,column2].getSolved())
+                                        if (!mySudoku[row2, column2].getSolved())
                                         {
                                             //remove i
-                                            if (mySudoku[row2,column2].contains(i))
+                                            if (mySudoku[row2, column2].contains(i))
                                             {
-                                                mySudoku[row2,column2].remove(mySudoku[row2,column2].indexOf(i));
+                                                mySudoku[row2, column2].RemoveAt(mySudoku[row2, column2].indexOf(i));
                                                 RookChecker(mySudoku);
                                                 BoxChecker(mySudoku);
                                             }
@@ -967,12 +967,12 @@ namespace SudokuLogic
                                     if (!(rowCoord2 == row2 && column == column2) && !(rowCoord3 == row2 && column == column2))
                                     {
                                         //if other cell is not solved
-                                        if (!mySudoku[row2,column2].getSolved())
+                                        if (!mySudoku[row2, column2].getSolved())
                                         {
                                             //remove i
-                                            if (mySudoku[row2,column2].contains(i))
+                                            if (mySudoku[row2, column2].contains(i))
                                             {
-                                                mySudoku[row2,column2].remove(mySudoku[row2,column2].indexOf(i));
+                                                mySudoku[row2, column2].RemoveAt(mySudoku[row2, column2].indexOf(i));
                                                 RookChecker(mySudoku);
                                                 BoxChecker(mySudoku);
                                             }
@@ -1000,21 +1000,21 @@ namespace SudokuLogic
                 for (int column = 0; column < 9; column++)
                 {
                     //if unsolved
-                    if (!mySudoku[row,column].getSolved())
+                    if (!mySudoku[row, column].getSolved())
                     {
                         //setup 
-                        int numCands = mySudoku[row,column].getPossibles().Count;
+                        int numCands = mySudoku[row, column].getPossibles().Count;
 
                         //bool array, set initially to true if the corresponding cell is unsolved
-                        bool[,] sameSolved = new bool[9,9];
+                        bool[,] sameSolved = new bool[9, 9];
                         for (int solvedRow = 0; solvedRow < 9; solvedRow++)
                         {
                             for (int solvedColumn = 0; solvedColumn < 9; solvedColumn++)
                             {
-                                sameSolved[solvedRow,solvedColumn] = true;
-                                if (mySudoku[solvedRow,solvedColumn].getSolved())
+                                sameSolved[solvedRow, solvedColumn] = true;
+                                if (mySudoku[solvedRow, solvedColumn].getSolved())
                                 {
-                                    sameSolved[solvedRow,solvedColumn] = false;
+                                    sameSolved[solvedRow, solvedColumn] = false;
                                 }
                             }
                         }
@@ -1022,25 +1022,25 @@ namespace SudokuLogic
                         //first guess
                         SudokuGrid copy1 = Copy(mySudoku);
 
-                        copy1[row,column].solve(mySudoku[row,column].getPossibles()[0]);
+                        copy1[row, column].solve(mySudoku[row, column].getPossibles()[0]);
 
                         if (solveForForcingChains(copy1))
                         {
-                            mySudoku[row,column].remove(mySudoku[row,column].indexOf(mySudoku[row,column].getPossibles()[0]));
+                            mySudoku[row, column].RemoveAt(mySudoku[row, column].indexOf(mySudoku[row, column].getPossibles()[0]));
                             return true;
                         }
                         if (numUnsolved(copy1) == 0 && !solved(copy1, false))
                         {
-                            mySudoku[row,column].remove(mySudoku[row,column].indexOf(mySudoku[row,column].getPossibles()[0]));
+                            mySudoku[row, column].RemoveAt(mySudoku[row, column].indexOf(mySudoku[row, column].getPossibles()[0]));
                             return true;
                         }
                         for (int row2 = 0; row2 < 9; row2++)
                         {
                             for (int column2 = 0; column2 < 9; column2++)
                             {
-                                if (!copy1[row2,column2].getSolved())
+                                if (!copy1[row2, column2].getSolved())
                                 {
-                                    sameSolved[row2,column2] = false;
+                                    sameSolved[row2, column2] = false;
                                 }
                             }
                         }
@@ -1050,15 +1050,15 @@ namespace SudokuLogic
                         for (int candidateIndex = 1; candidateIndex < numCands; candidateIndex++)
                         {
                             SudokuGrid copy = Copy(mySudoku);
-                            copy[row,column].solve(mySudoku[row,column].getPossibles()[candidateIndex]);
+                            copy[row, column].solve(mySudoku[row, column].getPossibles()[candidateIndex]);
                             if (solveForForcingChains(copy))
                             {
-                                mySudoku[row,column].remove(mySudoku[row,column].indexOf(mySudoku[row,column].getPossibles()[candidateIndex]));
+                                mySudoku[row, column].RemoveAt(mySudoku[row, column].indexOf(mySudoku[row, column].getPossibles()[candidateIndex]));
                                 return true;
                             }
                             if (numUnsolved(copy) == 0 && !solved(copy, false))
                             {
-                                mySudoku[row,column].remove(mySudoku[row,column].indexOf(mySudoku[row,column].getPossibles()[candidateIndex]));
+                                mySudoku[row, column].RemoveAt(mySudoku[row, column].indexOf(mySudoku[row, column].getPossibles()[candidateIndex]));
                                 return true;
                             }
 
@@ -1066,19 +1066,19 @@ namespace SudokuLogic
                             {
                                 for (int column2 = 0; column2 < 9; column2++)
                                 {
-                                    if (!mySudoku[row2,column2].getSolved())
+                                    if (!mySudoku[row2, column2].getSolved())
                                     {
-                                        if (copy[row2,column2].getSolved())
+                                        if (copy[row2, column2].getSolved())
                                         {
-                                            if (!copy[row2,column2].samePossible(copy1[row2,column2]))
+                                            if (!copy[row2, column2].samePossible(copy1[row2, column2]))
                                             {
-                                                sameSolved[row2,column2] = false;
+                                                sameSolved[row2, column2] = false;
                                             }
                                         }
                                     }
-                                    if (!copy[row2,column2].getSolved())
+                                    if (!copy[row2, column2].getSolved())
                                     {
-                                        sameSolved[row2,column2] = false;
+                                        sameSolved[row2, column2] = false;
                                     }
                                 }
                             }
@@ -1087,13 +1087,13 @@ namespace SudokuLogic
                         {
                             for (int column2 = 0; column2 < 9; column2++)
                             {
-                                if (!mySudoku[row2,column2].getSolved())
+                                if (!mySudoku[row2, column2].getSolved())
                                 {
-                                    if (sameSolved[row2,column2])
+                                    if (sameSolved[row2, column2])
                                     {
-                                        if (copy1[row2,column2].getSolved())
+                                        if (copy1[row2, column2].getSolved())
                                         {
-                                            mySudoku[row2,column2].solve(copy1[row2,column2].getVal());
+                                            mySudoku[row2, column2].solve(copy1[row2, column2].getVal());
                                             forcingChainsCheckerWorks = true;
                                             //System.out.println("I did it");
                                         }
@@ -1144,8 +1144,8 @@ namespace SudokuLogic
             {
                 forcingChainsCheckerWorks = forcingChainsChecker(mySudoku);
             }
-            
-            
+
+
 
             if (forcingChainsCheckerWorks)
             {
@@ -1164,16 +1164,16 @@ namespace SudokuLogic
                 for (int column = 0; column < 9; column++)
                 {
                     sudokCell sudokCell = new sudokCell();
-                    sudokCell x = mySudoku[row,column];
-                    mySudoku2[row,column] = sudokCell.Clone(x);
-                    
+                    sudokCell x = mySudoku[row, column];
+                    mySudoku2[row, column] = sudokCell.Clone(x);
+
                 }
             }
             return mySudoku2;
         }
 
         //check if the sudoku is solved
-        public bool solved (SudokuGrid mySudoku)
+        public bool solved(SudokuGrid mySudoku)
         {
             return solved(mySudoku, false);
         }
@@ -1186,7 +1186,7 @@ namespace SudokuLogic
                 int numTotal = 0;
                 for (int column = 0; column < 9; column++)
                 {
-                    numTotal += mySudoku[row,column].getVal();
+                    numTotal += mySudoku[row, column].getVal();
                 }
                 if (numTotal != 45)
                 {
@@ -1200,7 +1200,7 @@ namespace SudokuLogic
                 int numTotal = 0;
                 for (int row = 0; row < 9; row++)
                 {
-                    numTotal += mySudoku[row,column].getVal();
+                    numTotal += mySudoku[row, column].getVal();
                 }
                 if (numTotal != 45)
                 {
@@ -1223,7 +1223,7 @@ namespace SudokuLogic
                         //for each column in the small box
                         for (int column2 = boxColumn * 3; column2 < boxColumn * 3 + 3; column2++)
                         {
-                            numTotal += mySudoku[row2,column2].getVal();
+                            numTotal += mySudoku[row2, column2].getVal();
                         }
                     }
                     if (numTotal != 45)
@@ -1246,7 +1246,7 @@ namespace SudokuLogic
                 for (int column = 0; column < 9; column++)
                 {
                     //if that element is solved
-                    if (mySudoku[row,column].getSolved())
+                    if (mySudoku[row, column].getSolved())
                     {
                         numUnsolvedB--;
                     }
@@ -1292,11 +1292,11 @@ namespace SudokuLogic
         public bool InvalidMove(SudokuGrid mySudoku)
         {
             //check columns for duplicates 
-            for(int column = 0; column < 9; column++)
+            for (int column = 0; column < 9; column++)
             {
                 List<int> myList = new List<int>();
                 for (int row = 0; row < 9; row++)
-                { 
+                {
                     myList.Add(mySudoku[row, column].getVal());
                 }
                 if (ContainsDuplicate(myList))
@@ -1306,7 +1306,7 @@ namespace SudokuLogic
             }
 
             //check rows for duplicates
-            for(int row = 0; row < 9; row++)
+            for (int row = 0; row < 9; row++)
             {
                 List<int> myList = new List<int>();
                 for (int column = 0; column < 9; column++)
@@ -1322,7 +1322,7 @@ namespace SudokuLogic
             //check boxes for duplicates
 
             //for box coords
-            for(int boxRow = 0; boxRow < 3; boxRow++)
+            for (int boxRow = 0; boxRow < 3; boxRow++)
             {
                 for (int boxColumn = 0; boxColumn < 3; boxColumn++)
                 {
@@ -1349,7 +1349,7 @@ namespace SudokuLogic
         public bool ContainsDuplicate(List<int> myList)
         {
             List<int> results = new List<int>();
-            for(int i = 1; i <= 9; i++)
+            for (int i = 1; i <= 9; i++)
             {
                 results = myList.FindAll(
                 delegate (int bk)
@@ -1395,8 +1395,90 @@ namespace SudokuLogic
             return false;
         }
 
+        public String bruteForceSolver(SudokuGrid mySudoku)
+        {
+            if (solved(mySudoku))
+            {
+                return "already solved";
+            }
+            //else, guess all possibles and brute force solve. if multiple solutions, return false
+            for (int row = 0; row < 9; row++)
+            {
+                for (int column = 0; column < 9; column++)
+                {
+                    //if unsolved
+                    if (!mySudoku[row, column].getSolved())
+                    {
 
-        public void bruteForceSolver(SudokuGrid mySudoku)
+                        for (int i = 0; i < mySudoku[row, column].getPossibles().Count; i++)
+                        {
+                            SudokuGrid copy = Copy(mySudoku);
+                            //solve to the index of the guess
+                            copy[row, column].solve(mySudoku[row, column].getPossibles()[i]);
+
+                            if (solveForBruteForce(copy))
+                            {
+                                mySudoku[row, column].RemoveAt(i);
+                                i--;
+                            }
+                            else if (solved(copy))
+                            {
+                                mySudoku = Copy(copy);
+                                return "Solved";
+                            }
+                            else if (InvalidMove(copy))
+                            {
+                                mySudoku[row, column].RemoveAt(i);
+                                i--;
+                                //bruteForceSolver(mySudoku);
+                                //return "";
+                            }
+                            else if (numUnsolved(copy) == 0)
+                            {
+                                mySudoku[row, column].RemoveAt(i);
+                                i--;
+                                //bruteForceSolver(mySudoku);
+                                //return "";
+                            }
+                            else
+                            {
+                                //brute force it
+                                bruteForceSolver(copy);
+                                //return "Valid moves, still not solved";
+                            }
+                        }
+                    }
+                }
+            }
+            return "blah";
+        }
+
+        public bool solveForBruteForce(SudokuGrid mySudoku)
+        {
+            try
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    RookChecker(mySudoku);
+                    BoxChecker(mySudoku);
+                    OnlyCandidateLeftRookChecker(mySudoku);
+                    OnlyCandidateLeftBoxChecker(mySudoku);
+                    NakedCandidateRookChecker(mySudoku);
+                    NakedCandidateBoxChecker(mySudoku);
+                    CandidateLinesChecker(mySudoku);
+
+                    //System.out.println("HeHe");
+                }
+            }
+            //return if made a remove all error
+            catch (System.Exception)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void bruteForceSolverOld(SudokuGrid mySudoku)
         {
             //for each level guess
             SudokuGrid mySudoku2 = Copy(mySudoku);
@@ -1427,7 +1509,7 @@ namespace SudokuLogic
                             row = 0;
                             column = 0;
                         }
-                        if (!testCase[row,column].getSolved())
+                        if (!testCase[row, column].getSolved())
                         {
                             num++;
                             if (num == i)
@@ -1437,10 +1519,10 @@ namespace SudokuLogic
                         }
                     }
                     i++;
-                    List<int> possibles = testCase[row,column].getPossibles();
+                    List<int> possibles = testCase[row, column].getPossibles();
                     var rand = new Random();
                     int randomIndex = (int)(rand.NextDouble() * possibles.Count);
-                    testCase[row,column].solve(possibles[randomIndex]);
+                    testCase[row, column].solve(possibles[randomIndex]);
                     if (i > numUnsolved(testCase))
                     {
                         //System.out.println("i greater than num unsolved");
@@ -1481,7 +1563,7 @@ namespace SudokuLogic
                         {
                             for (int columnn = 0; columnn < 9; columnn++)
                             {
-                                mySudoku[roww,columnn] = testCase[roww,columnn];
+                                mySudoku[roww, columnn] = testCase[roww, columnn];
                             }
                         }
                     }
@@ -1499,7 +1581,7 @@ namespace SudokuLogic
 
     }
 
-    
+
 
 
 
