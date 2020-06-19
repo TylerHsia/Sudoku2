@@ -181,6 +181,39 @@ namespace TestProject
             Assert.IsFalse(notValid1.IsValid(), "IsValid said a nonValid Sudoku is validx");
         }
         
+        [TestMethod]
+        public void TestBruteForceChecker()
+        {
+
+
+            //need to check 5, 9, 12, 13
+            SudokuGrid mySudoku = new SudokuGrid();
+            int[,] sudokuInputted = input(5);
+            //my sudoku to be worked with
+            for (int row = 0; row < 9; row++)
+            {
+                for (int column = 0; column < 9; column++)
+                {
+                    mySudoku[row, column] = new sudokCell(sudokuInputted[row, column]);
+                }
+            }
+
+
+            
+        }
+
+        [TestMethod]
+        public void OverFlowException()
+        {
+            Assert.Fail(); //run this test then comment this line out and rerun 
+            
+            Recursion();
+        }
+
+        public void Recursion()
+        {
+            Recursion();
+        }
 
         //gives sudoku from list of possibles
         public static int[,] input(int x)

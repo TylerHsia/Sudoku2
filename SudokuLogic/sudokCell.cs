@@ -137,7 +137,7 @@ namespace SudokuLogic
             }
         }
 
-        public string ToString()
+        public override string ToString()
         {
             string toReturn = "";
             if (solved)
