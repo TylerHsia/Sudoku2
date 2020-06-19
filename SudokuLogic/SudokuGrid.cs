@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.Text;
 
 namespace SudokuLogic
@@ -70,8 +71,13 @@ namespace SudokuLogic
         public bool IsValid()
         {
             SudokuSolver sudokuSolver = new SudokuSolver();
+            
+            if(this.NumSolved() < 16)
+            {
+                return false;
+            }
 
-            sudokuSolver.BoxChecker(this);
+            SolveForIsValid();
             //if simple solve, return is valid
             if (sudokuSolver.solved(this))
             {
@@ -79,23 +85,35 @@ namespace SudokuLogic
             }
 
             bool solvedOne = false;
+
+            SudokuGrid copy1 = sudokuSolver.Copy(this);
+            sudokuSolver.bruteForceSolver(copy1);
+
+            if (!sudokuSolver.solved(copy1))
+            {
+                return false;
+            }
+
+
             //else, guess all possibles and brute force solve. if multiple solutions, return false
-            for(int row = 0; row < 9; row++)
+            for (int row = 0; row < 9; row++)
             {
                 for (int column = 0; column < 9; column++)
                 {
                     //if unsolved
                     if (!this[row, column].getSolved())
                     {
+                        
                         for(int i = 0; i < this[row, column].getPossibles().Count; i++)
                         {
+                            SudokuGrid copy = sudokuSolver.Copy(this);
                             //solve to the index of the guess
-                            this[row, column].solve(this[row, column].getPossibles()[i]);
+                            copy[row, column].solve(this[row, column].getPossibles()[i]);
 
                             //brute force it
-                            sudokuSolver.bruteForceSolver(this);
-                            bool solvedThisOne = sudokuSolver.solved(this);
-                            //if this one and another were solved, invalid
+                            sudokuSolver.bruteForceSolver(copy);
+                            bool solvedThisOne = sudokuSolver.solved(copy);
+                            //if this one and another were solved, invalid for too many
                             if(solvedThisOne && solvedOne)
                             {
                                 return false;
@@ -114,6 +132,23 @@ namespace SudokuLogic
             return false;
         }
 
+        private int NumSolved()
+        {
+            int numSolved = 0;
+
+            for(int row = 0; row < 9; row++)
+            {
+                for(int column = 0; column < 9; column++)
+                {
+                    if(this[row, column].getSolved())
+                    {
+                        numSolved++;
+                    }
+                }
+            }
+            return numSolved;
+        }
+
         public void SolveForIsValid()
         {
             SudokuSolver sudokuSolver = new SudokuSolver();
@@ -123,7 +158,9 @@ namespace SudokuLogic
                 sudokuSolver.BoxChecker(this);
                 sudokuSolver.OnlyCandidateLeftRookChecker(this);
                 sudokuSolver.OnlyCandidateLeftBoxChecker(this);
-                
+                sudokuSolver.NakedCandidateRookChecker(this);
+                sudokuSolver.NakedCandidateBoxChecker(this);
+                sudokuSolver.CandidateLinesChecker(this);
 
 
                 //System.out.println("HeHe");

@@ -177,7 +177,8 @@ namespace TestProject
                     notValid1[row, column] = new sudokCell();
                 }
             }
-            Assert.IsFalse(notValid1.IsValid(), "IsValid said a nonValid Sudoku is true");
+            notValid1[1, 1].solve(2);
+            Assert.IsFalse(notValid1.IsValid(), "IsValid said a nonValid Sudoku is validx");
         }
         
 
