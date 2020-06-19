@@ -67,5 +67,36 @@ namespace SudokuLogic
             return sb.ToString();
         }
 
+        public bool IsValid()
+        {
+            SudokuSolver sudokuSolver = new SudokuSolver();
+
+            sudokuSolver.BoxChecker(this);
+
+            if (sudokuSolver.solved(this))
+            {
+                return true;
+            }
+            
+            return true;
+        }
+
+        public void SolveForIsValid()
+        {
+            SudokuSolver sudokuSolver = new SudokuSolver();
+            for (int i = 0; i < 10; i++)
+            {
+                sudokuSolver.RookChecker(this);
+                sudokuSolver.BoxChecker(this);
+                sudokuSolver.OnlyCandidateLeftRookChecker(this);
+                sudokuSolver.OnlyCandidateLeftBoxChecker(this);
+                
+
+
+                //System.out.println("HeHe");
+            }
+            
+
+        }
     }
 }

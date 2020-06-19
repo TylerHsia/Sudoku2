@@ -1172,7 +1172,11 @@ namespace SudokuLogic
             return mySudoku2;
         }
 
-
+        //check if the sudoku is solved
+        public bool solved (SudokuGrid mySudoku)
+        {
+            return solved(mySudoku, false);
+        }
         //check if the sudoku is solved
         public bool solved(SudokuGrid mySudoku, bool printChecks)
         {
@@ -1390,6 +1394,108 @@ namespace SudokuLogic
             }
             return false;
         }
+
+
+        public void bruteForceSolver(SudokuGrid mySudoku)
+        {
+            //for each level guess
+            SudokuGrid mySudoku2 = Copy(mySudoku);
+            for (int k = 0; k < numUnsolved(mySudoku) && !solved(mySudoku, false); k++)
+            {
+                //while sudoku2 is unsolved
+                int infiniteLoop = 0;
+                int i = 1;
+                while (!solved(mySudoku2, false) && infiniteLoop < 100)
+                {
+                    //infiniteLoop++;
+                    SudokuGrid testCase = Copy(mySudoku2);
+                    //find i unsolved cell and solve to be random of candidates 
+                    bool foundUnsolved = false;
+                    int row = -1;
+                    int column = 0;
+                    int num = 0;
+                    while (!foundUnsolved)
+                    {
+                        row++;
+                        if (row == 9)
+                        {
+                            row = 0;
+                            column++;
+                        }
+                        if (column == 9)
+                        {
+                            row = 0;
+                            column = 0;
+                        }
+                        if (!testCase[row,column].getSolved())
+                        {
+                            num++;
+                            if (num == i)
+                            {
+                                foundUnsolved = true;
+                            }
+                        }
+                    }
+                    i++;
+                    List<int> possibles = testCase[row,column].getPossibles();
+                    var rand = new Random();
+                    int randomIndex = (int)(rand.NextDouble() * possibles.Count);
+                    testCase[row,column].solve(possibles[randomIndex]);
+                    if (i > numUnsolved(testCase))
+                    {
+                        //System.out.println("i greater than num unsolved");
+                        //System.out.println("numUnsolved " + numUnsolved(testCase));
+                        i = 1;
+                        /*if(numUnsolved(testCase) != 0){
+                            solve(testCase, true);
+                        }*/
+                    }
+                    //if all cells solved but sudoku not solved
+                    if (numUnsolved(testCase) == 0 && !solved(testCase, false))
+                    {
+                        //System.out.println("restarted brute force");
+                        bruteForceSolver(mySudoku);
+                    }
+
+                    for (int j = 0; j < 10; j++)
+                    {
+                        RookChecker(testCase);
+                        BoxChecker(testCase);
+                        OnlyCandidateLeftRookChecker(mySudoku);
+                        OnlyCandidateLeftBoxChecker(mySudoku);
+                        NakedCandidateRookChecker(mySudoku);
+                        NakedCandidateBoxChecker(mySudoku);
+                        CandidateLinesChecker(mySudoku);
+                    }
+                    if (!solved(testCase, false))
+                    {
+                        //System.out.println("multiple guesses\n numunsolved " + numUnsolved(testCase));
+                        mySudoku2 = Copy(testCase);
+                        infiniteLoop = 100;
+                    }
+                    //if the test case is properly solved, make sudoku equal testcase
+                    if (solved(testCase, false))
+                    {
+                        //printBoard(testCase, false);
+                        for (int roww = 0; roww < 9; roww++)
+                        {
+                            for (int columnn = 0; columnn < 9; columnn++)
+                            {
+                                mySudoku[roww,columnn] = testCase[roww,columnn];
+                            }
+                        }
+                    }
+                    //if all cells solved but sudoku not solved
+                    if (numUnsolved(testCase) == 0 && !solved(testCase, false))
+                    {
+                        //System.out.println("restarted brute force");
+                        bruteForceSolver(mySudoku);
+                    }
+                }
+            }
+        }
+
+
 
     }
 
