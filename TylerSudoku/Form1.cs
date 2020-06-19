@@ -14,6 +14,8 @@ namespace TylerSudoku
 {
     public partial class Form1 : Form
     {
+        private TextBox infoBox;
+
         public Form1()
         {
             InitializeComponent();
@@ -65,6 +67,12 @@ namespace TylerSudoku
             this.Controls.Add(newButton);
             newButton.Text = "helloWorld";
 
+
+            infoBox = new TextBox();
+            this.Controls.Add(infoBox);
+            infoBox.ReadOnly = true;
+            infoBox.TabStop = false;
+            infoBox.Left = 100;
             
 
         }
@@ -123,16 +131,25 @@ namespace TylerSudoku
                     //intSudokuGrid[row, column] = int.Parse(cellArray[row * 9 + column].Text);
                 }
             }
+
+
             SudokuGrid mySudoku = new SudokuGrid();
             
             mySudoku = sudokuSolver.FromIntArray(intSudokuGrid);
-            sudokuSolver.Solve(mySudoku, true);
 
-            for(int i = 0; i < cellArray.Count; i++)
+            if (mySudoku.IsValid())
             {
-                cellArray[i].Text = "" + mySudoku[i / 9, i % 9].toStringWithoutCands();
-            }
+                sudokuSolver.Solve(mySudoku, true);
 
+                for (int i = 0; i < cellArray.Count; i++)
+                {
+                    cellArray[i].Text = "" + mySudoku[i / 9, i % 9].toStringWithoutCands();
+                }
+            }
+            else
+            {
+                infoBox.Text = "the sudoku inputted was invalid";
+            }
         }
     }
 
