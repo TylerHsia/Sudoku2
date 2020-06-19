@@ -14,7 +14,7 @@ namespace TestProject
     [TestClass]
     public class UnitTest1
     {
-
+        private int NumStoredSudokus = 23;
 
         public TestContext TestContext { get; set; }
 
@@ -99,7 +99,7 @@ namespace TestProject
 
             bool solvedAll = true;
             //1 to 23, inclusive
-            for (int i = 1; i <= 23; i++)
+            for (int i = 1; i <= NumStoredSudokus; i++)
             {
                 SudokuLogic.SudokuSolver sudokuSolver = new SudokuLogic.SudokuSolver();
                 SudokuLogic.sudokCell sudokCell = new SudokuLogic.sudokCell();
@@ -142,6 +142,43 @@ namespace TestProject
             Assert.IsTrue(solvedAll, "Not all solved");
         }
 
+        [TestMethod]
+        public void CheckIsValidMethod()
+        {
+            //1 to 23, inclusive
+            for (int i = 1; i <= NumStoredSudokus; i++)
+            {
+                SudokuLogic.SudokuSolver sudokuSolver = new SudokuLogic.SudokuSolver();
+                SudokuLogic.sudokCell sudokCell = new SudokuLogic.sudokCell();
+                //inputted sudoku
+                int[,] sudokuInputted = input(i);
+
+                SudokuGrid mySudoku = new SudokuGrid();
+
+                //my sudoku to be worked with
+                for (int row = 0; row < 9; row++)
+                {
+                    for (int column = 0; column < 9; column++)
+                    {
+                        mySudoku[row, column] = new sudokCell(sudokuInputted[row, column]);
+                    }
+                }
+
+                Assert.IsTrue(mySudoku.IsValid(), $"{i} stored sudoku was said to be not valid");
+
+            }
+
+            SudokuGrid notValid1 = new SudokuGrid();
+            //my sudoku to be worked with
+            for (int row = 0; row < 9; row++)
+            {
+                for (int column = 0; column < 9; column++)
+                {
+                    notValid1[row, column] = new sudokCell();
+                }
+            }
+            Assert.IsFalse(notValid1.IsValid(), "IsValid said a nonValid Sudoku is true");
+        }
         
 
         //gives sudoku from list of possibles
