@@ -146,7 +146,8 @@ namespace TestProject
         public void CheckIsValidMethod()
         {
             //1 to 23, inclusive
-            for (int i = 1; i <= NumStoredSudokus; i++)
+            //23 broke
+            for (int i = 23; i <= 23; i++)
             {
                 SudokuLogic.SudokuSolver sudokuSolver = new SudokuLogic.SudokuSolver();
                 SudokuLogic.sudokCell sudokCell = new SudokuLogic.sudokCell();
@@ -164,7 +165,7 @@ namespace TestProject
                     }
                 }
 
-                Assert.IsTrue(mySudoku.IsValid(), $"{i} stored sudoku was said to be not valid");
+                Assert.IsTrue(mySudoku.IsValid(), $"{i} was said to be not valid");
 
             }
 

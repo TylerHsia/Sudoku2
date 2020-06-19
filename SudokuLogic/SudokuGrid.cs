@@ -95,6 +95,12 @@ namespace SudokuLogic
                 return false;
             }
 
+            if (sudokuSolver.InvalidMove(this))
+            {
+                return false;
+            }
+
+            SudokuGrid firstSolve = new SudokuGrid();
 
             //else, guess all possibles and brute force solve. if multiple solutions, return false
             for (int row = 0; row < 9; row++)
@@ -109,30 +115,66 @@ namespace SudokuLogic
                         {
                             SudokuGrid copy = sudokuSolver.Copy(this);
                             //solve to the index of the guess
-                            copy[row, column].solve(this[row, column].getPossibles()[i]);
+                            copy[row, column].solve(copy[row, column].getPossibles()[i]);
 
-                            //brute force it
-                            sudokuSolver.bruteForceSolver(ref copy);
-                            bool solvedThisOne = sudokuSolver.solved(copy);
-                            //if this one and another were solved, invalid for too many
-                            if(solvedThisOne && solvedOne)
+
+
+                            bool solvedThisOne;
+
+                            
+                            
+                            try
                             {
-                                return false;
+                                //brute force it
+                                sudokuSolver.bruteForceSolver(ref copy);
+                                solvedThisOne = sudokuSolver.solved(copy);
                             }
-                            //if this one is solved, solved one
-                            if (solvedThisOne && !solvedOne)
+                            catch
                             {
-                                solvedOne = true;
+                                solvedThisOne = false;
                             }
                             
+                            //if this one and another different one were solved, invalid for too many solutions
+                            if (solvedThisOne)
+                            {
+                                try
+                                {
+                                    if (!firstSolve.ToString().Equals(copy.ToString()))
+                                    {
+                                        return false;
+                                    }
+                                }
+                                catch
+                                {
+
+                                }
+                            }
+                            if (solvedThisOne)
+                            {
+                                firstSolve = sudokuSolver.Copy(copy);
+                            }
                         }
                     }
                 }
             }
-            //if none of the guesses worked, return false
-            return false;
+            return true;
+            
         }
 
+        public bool Equals(SudokuGrid obj)
+        {
+            for(int row = 0; row < 9; row++)
+            {
+                for(int column = 0; column < 9; column++)
+                {
+                    if(!this[row, column].Equals(obj[row, column]))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
         private int NumSolved()
         {
             int numSolved = 0;
