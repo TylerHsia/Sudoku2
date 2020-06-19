@@ -89,6 +89,10 @@ namespace SudokuLogic
                     {
                         for(int i = 0; i < this[row, column].getPossibles().Count; i++)
                         {
+                            //solve to the index of the guess
+                            this[row, column].solve(this[row, column].getPossibles()[i]);
+
+                            //brute force it
                             sudokuSolver.bruteForceSolver(this);
                             bool solvedThisOne = sudokuSolver.solved(this);
                             //if this one and another were solved, invalid
