@@ -18,7 +18,7 @@ namespace TestProject
 
         public TestContext TestContext { get; set; }
 
-        [TestMethod]
+        
         public void testFoobar()
         {
             var x = new SudokuGrid();

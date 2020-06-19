@@ -1401,6 +1401,7 @@ namespace SudokuLogic
             {
                 return "already solved";
             }
+            solveForBruteForce(mySudoku);
             //else, guess all possibles and brute force solve. if multiple solutions, return false
             for (int row = 0; row < 9; row++)
             {
@@ -1412,6 +1413,7 @@ namespace SudokuLogic
 
                         for (int i = 0; i < mySudoku[row, column].getPossibles().Count; i++)
                         {
+                            
                             SudokuGrid copy = Copy(mySudoku);
                             //solve to the index of the guess
                             copy[row, column].solve(mySudoku[row, column].getPossibles()[i]);
@@ -1420,6 +1422,7 @@ namespace SudokuLogic
                             {
                                 mySudoku[row, column].RemoveAt(i);
                                 i--;
+                                solveForBruteForce(mySudoku);
                             }
                             else if (solved(copy))
                             {
@@ -1428,8 +1431,16 @@ namespace SudokuLogic
                             }
                             else if (InvalidMove(copy))
                             {
-                                mySudoku[row, column].RemoveAt(i);
-                                i--;
+                                try
+                                {
+                                    mySudoku[row, column].RemoveAt(i);
+                                    i--;
+                                    solveForBruteForce(mySudoku);
+                                }
+                                catch 
+                                {
+                                    
+                                }
                                 //bruteForceSolver(mySudoku);
                                 //return "";
                             }
@@ -1437,6 +1448,7 @@ namespace SudokuLogic
                             {
                                 mySudoku[row, column].RemoveAt(i);
                                 i--;
+                                solveForBruteForce(mySudoku);
                                 //bruteForceSolver(mySudoku);
                                 //return "";
                             }
