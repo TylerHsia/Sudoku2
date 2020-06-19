@@ -84,7 +84,7 @@ namespace TestProject
         {
             SudokuLogic.SudokuSolver sudokuSolver = new SudokuLogic.SudokuSolver();
             SudokuGrid myGrid = new SudokuGrid();
-            myGrid = FromIntArray(input(1));
+            myGrid = sudokuSolver.FromIntArray(input(1));
             SudokuGrid myGrid2 = sudokuSolver.Copy(myGrid);
             Assert.IsTrue(myGrid.ToString().Equals(myGrid2.ToString()));
 
@@ -142,21 +142,7 @@ namespace TestProject
             Assert.IsTrue(solvedAll, "Not all solved");
         }
 
-        //converts int array to sudokcell sudokugrid
-        public SudokuGrid FromIntArray(int[,] myArray)
-        {
-            SudokuGrid mySudoku = new SudokuGrid();
-            //my sudoku to be worked with
-            for (int row = 0; row < 9; row++)
-            {
-                for (int column = 0; column < 9; column++)
-                {
-                    mySudoku[row, column] = new sudokCell(myArray[row, column]);
-                }
-            }
-
-            return mySudoku;
-        }
+        
 
         //gives sudoku from list of possibles
         public static int[,] input(int x)

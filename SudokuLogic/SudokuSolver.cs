@@ -1136,7 +1136,16 @@ namespace SudokuLogic
 
             bool forcingChainsCheckerWorks = false;
 
-            forcingChainsCheckerWorks = forcingChainsChecker(mySudoku);
+            if (InvalidMove(mySudoku))
+            {
+                return true;
+            }
+            if (!solved(mySudoku, false))
+            {
+                forcingChainsCheckerWorks = forcingChainsChecker(mySudoku);
+            }
+            
+            
 
             if (forcingChainsCheckerWorks)
             {
@@ -1353,12 +1362,41 @@ namespace SudokuLogic
             return false;
         }
 
+        //converts int array to sudokcell sudokugrid
+        public SudokuGrid FromIntArray(int[,] myArray)
+        {
+            SudokuGrid mySudoku = new SudokuGrid();
+            //my sudoku to be worked with
+            for (int row = 0; row < 9; row++)
+            {
+                for (int column = 0; column < 9; column++)
+                {
+                    mySudoku[row, column] = new sudokCell(myArray[row, column]);
+                }
+            }
+
+            return mySudoku;
+        }
+
+        //is a sudoku digit helper method
+        public bool isDigit(String input)
+        {
+            for (int i = 1; i <= 9; i++)
+            {
+                if (input.Equals("" + i))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 
-
-
- 
-
     
-    
+
+
+
+
+
 }

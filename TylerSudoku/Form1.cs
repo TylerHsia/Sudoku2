@@ -61,7 +61,10 @@ namespace TylerSudoku
             this.Height = 550;
 
 
-            Button newButton = new Button(this);
+            var newButton = new Button();
+            this.Controls.Add(newButton);
+            newButton.Text = "helloWorld";
+
             
 
         }
@@ -101,6 +104,36 @@ namespace TylerSudoku
                 cellArray[i].Text = "";
             }
         }
+
+        private void solveGrid_Click(object sender, EventArgs e)
+        {
+            SudokuSolver sudokuSolver = new SudokuSolver();
+            var cellArray = this.Controls.OfType<MyCellBox>().ToList();
+            int[,] intSudokuGrid = new int[9, 9];
+            for(int row = 0; row < 9; row++)
+            {
+                for(int column = 0; column < 9; column++)
+                {
+                    
+                    
+                    if(sudokuSolver.isDigit(cellArray[row * 9 + column].Text))
+                    {
+                        intSudokuGrid[row, column] = int.Parse(cellArray[row * 9 + column].Text);
+                    }
+                    //intSudokuGrid[row, column] = int.Parse(cellArray[row * 9 + column].Text);
+                }
+            }
+            SudokuGrid mySudoku = new SudokuGrid();
+            
+            mySudoku = sudokuSolver.FromIntArray(intSudokuGrid);
+            sudokuSolver.Solve(mySudoku, true);
+
+            for(int i = 0; i < cellArray.Count; i++)
+            {
+                cellArray[i].Text = "" + mySudoku[i / 9, i % 9].toStringWithoutCands();
+            }
+
+        }
     }
 
 
@@ -122,14 +155,15 @@ namespace TylerSudoku
         protected override void OnKeyUp(KeyEventArgs e)
         {
             var cellArray = form1.Controls.OfType<MyCellBox>().ToList();
-
+            SudokuSolver sudokuSolver = new SudokuSolver();
             //tab for key up
             base.OnKeyUp(e);
             //if num 1 - 9
             if(e.KeyCode > Keys.D0 && e.KeyCode <= Keys.D9 || e.KeyCode > Keys.NumPad0 && e.KeyCode <= Keys.NumPad9)
             {
+                
                 //if text is digit
-                if (isDigit(this.Text))
+                if (sudokuSolver.isDigit(this.Text))
                 {
                     //if last cell, tab to top
                     if (xCoord == 8 && yCoord == 8)
@@ -146,14 +180,14 @@ namespace TylerSudoku
                     }
                 }
             }
-
+            
             //if not a digit, delete
-            if (!isDigit(this.Text) && this.Text.Length > 0)
+            if (!sudokuSolver.isDigit(this.Text) && this.Text.Length > 0)
             {
                 //this.BackColor = Color.Red;
                 this.Text = "";
             }
-            if(isDigit(this.Text) || this.Text.Length == 0)
+            if(sudokuSolver.isDigit(this.Text) || this.Text.Length == 0)
             {
                 //this.BackColor = Color.White;
             }
@@ -202,18 +236,7 @@ namespace TylerSudoku
             }
         }
 
-        //is a sudoku digit helper method
-        public bool isDigit(String input)
-        {
-            for(int i = 1; i<= 9; i++)
-            {
-                if(input.Equals("" + i))
-                {
-                    return true;
-                }
-            }            
-            return false;
-        }
+        
 
         //select all text when click my textbox
         protected override void OnClick(EventArgs e)
