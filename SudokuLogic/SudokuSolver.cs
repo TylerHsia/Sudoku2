@@ -1029,7 +1029,7 @@ namespace SudokuLogic
                             mySudoku[row, column].RemoveAt(mySudoku[row, column].indexOf(mySudoku[row, column].getPossibles()[0]));
                             return true;
                         }
-                        if (numUnsolved(copy1) == 0 && !solved(copy1, false))
+                        if (numUnsolved(copy1) == 0 && !IsSolved(copy1, false))
                         {
                             mySudoku[row, column].RemoveAt(mySudoku[row, column].indexOf(mySudoku[row, column].getPossibles()[0]));
                             return true;
@@ -1056,7 +1056,7 @@ namespace SudokuLogic
                                 mySudoku[row, column].RemoveAt(mySudoku[row, column].indexOf(mySudoku[row, column].getPossibles()[candidateIndex]));
                                 return true;
                             }
-                            if (numUnsolved(copy) == 0 && !solved(copy, false))
+                            if (numUnsolved(copy) == 0 && !IsSolved(copy, false))
                             {
                                 mySudoku[row, column].RemoveAt(mySudoku[row, column].indexOf(mySudoku[row, column].getPossibles()[candidateIndex]));
                                 return true;
@@ -1140,7 +1140,7 @@ namespace SudokuLogic
             {
                 return true;
             }
-            if (!solved(mySudoku, false))
+            if (!IsSolved(mySudoku, false))
             {
                 forcingChainsCheckerWorks = forcingChainsChecker(mySudoku);
             }
@@ -1173,49 +1173,66 @@ namespace SudokuLogic
         }
 
         //check if the sudoku is solved
-        public bool solved(SudokuGrid mySudoku)
+        public bool IsSolved(SudokuGrid mySudoku)
         {
-            return solved(mySudoku, false);
+            return IsSolved(mySudoku, false);
         }
         //check if the sudoku is solved
-        public bool solved(SudokuGrid mySudoku, bool printChecks)
+        public bool IsSolved(SudokuGrid mySudoku, bool printChecks)
         {
-            //two for loops to go through each row, check adds to 45
+            //checks each box is solved
+            for(int row = 0; row < 9; row++)
+            {
+                for (int column = 0; column < 9; column++)
+                {
+                    //if unsolved, return false
+                    if (!mySudoku[row, column].getSolved())
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            //two for loops to go through each row, check no duplicates
             for (int row = 0; row < 9; row++)
             {
+                var myList = new List<int>();
                 int numTotal = 0;
                 for (int column = 0; column < 9; column++)
                 {
-                    numTotal += mySudoku[row, column].getVal();
+                    myList.Add(mySudoku[row, column].getVal());
                 }
-                if (numTotal != 45)
+                if (ContainsDuplicate(myList))
                 {
                     return false;
                 }
             }
+            
             //if(printChecks) System.out.println("Rows add up");        
-            //two for loops to go through each column, check adds to 45
+            //two for loops to go through each column, check no duplicates
             for (int column = 0; column < 9; column++)
             {
+                var myList = new List<int>();
                 int numTotal = 0;
                 for (int row = 0; row < 9; row++)
                 {
-                    numTotal += mySudoku[row, column].getVal();
+                    myList.Add(mySudoku[row, column].getVal());
                 }
-                if (numTotal != 45)
+                if (ContainsDuplicate(myList))
                 {
                     return false;
                 }
             }
             //if(printChecks) System.out.println("Columns add up");
 
-            //check each box, check adds to 45
+            //check each box, check no duplicates 
             //for each box row
             for (int boxRow = 0; boxRow < 3; boxRow++)
             {
                 //for each box column
                 for (int boxColumn = 0; boxColumn < 3; boxColumn++)
                 {
+                    var myList = new List<int>();
                     int numTotal = 0;
                     //for each row in the small box
                     for (int row2 = boxRow * 3; row2 < boxRow * 3 + 3; row2++)
@@ -1223,10 +1240,10 @@ namespace SudokuLogic
                         //for each column in the small box
                         for (int column2 = boxColumn * 3; column2 < boxColumn * 3 + 3; column2++)
                         {
-                            numTotal += mySudoku[row2, column2].getVal();
+                            myList.Add(mySudoku[row2, column2].getVal());
                         }
                     }
-                    if (numTotal != 45)
+                    if (ContainsDuplicate(myList))
                     {
                         return false;
                     }
@@ -1397,7 +1414,7 @@ namespace SudokuLogic
 
         public String bruteForceSolver(ref SudokuGrid mySudoku)
         {
-            if (solved(mySudoku))
+            if (IsSolved(mySudoku))
             {
                 return "already solved";
             }
@@ -1424,7 +1441,7 @@ namespace SudokuLogic
                                 i--;
                                 solveForBruteForce(mySudoku);
                             }
-                            else if (solved(copy))
+                            else if (IsSolved(copy))
                             {
                                 mySudoku = Copy(copy);
                                 return "Solved";
@@ -1462,7 +1479,7 @@ namespace SudokuLogic
                                     solveForBruteForce(mySudoku);
                                     
                                 }
-                                else if (solved(copy))
+                                else if (IsSolved(copy))
                                 {
                                     mySudoku = Copy(copy);
                                     return "solved";
@@ -1505,12 +1522,12 @@ namespace SudokuLogic
         {
             //for each level guess
             SudokuGrid mySudoku2 = Copy(mySudoku);
-            for (int k = 0; k < numUnsolved(mySudoku) && !solved(mySudoku, false); k++)
+            for (int k = 0; k < numUnsolved(mySudoku) && !IsSolved(mySudoku, false); k++)
             {
                 //while sudoku2 is unsolved
                 int infiniteLoop = 0;
                 int i = 1;
-                while (!solved(mySudoku2, false) && infiniteLoop < 100)
+                while (!IsSolved(mySudoku2, false) && infiniteLoop < 100)
                 {
                     //infiniteLoop++;
                     SudokuGrid testCase = Copy(mySudoku2);
@@ -1556,7 +1573,7 @@ namespace SudokuLogic
                         }*/
                     }
                     //if all cells solved but sudoku not solved
-                    if (numUnsolved(testCase) == 0 && !solved(testCase, false))
+                    if (numUnsolved(testCase) == 0 && !IsSolved(testCase, false))
                     {
                         //System.out.println("restarted brute force");
                         bruteForceSolver(ref mySudoku);
@@ -1572,14 +1589,14 @@ namespace SudokuLogic
                         NakedCandidateBoxChecker(mySudoku);
                         CandidateLinesChecker(mySudoku);
                     }
-                    if (!solved(testCase, false))
+                    if (!IsSolved(testCase, false))
                     {
                         //System.out.println("multiple guesses\n numunsolved " + numUnsolved(testCase));
                         mySudoku2 = Copy(testCase);
                         infiniteLoop = 100;
                     }
                     //if the test case is properly solved, make sudoku equal testcase
-                    if (solved(testCase, false))
+                    if (IsSolved(testCase, false))
                     {
                         //printBoard(testCase, false);
                         for (int roww = 0; roww < 9; roww++)
@@ -1591,7 +1608,7 @@ namespace SudokuLogic
                         }
                     }
                     //if all cells solved but sudoku not solved
-                    if (numUnsolved(testCase) == 0 && !solved(testCase, false))
+                    if (numUnsolved(testCase) == 0 && !IsSolved(testCase, false))
                     {
                         //System.out.println("restarted brute force");
                         bruteForceSolver(ref mySudoku);
@@ -1600,14 +1617,20 @@ namespace SudokuLogic
             }
         }
 
-
+        public bool Equals(SudokuGrid obj, SudokuGrid obj2)
+        {
+            for (int row = 0; row < 9; row++)
+            {
+                for (int column = 0; column < 9; column++)
+                {
+                    if (!obj2[row, column].Equals(obj[row, column]))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
 
     }
-
-
-
-
-
-
-
 }

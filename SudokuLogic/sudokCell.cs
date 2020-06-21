@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace SudokuLogic
@@ -199,7 +200,7 @@ namespace SudokuLogic
 
         public bool Equals(sudokCell obj)
         {
-            if (!this.getPossibles().Equals(obj.getPossibles()) || this.getSolved() != obj.getSolved())
+            if (!this.getPossibles().SequenceEqual(obj.getPossibles()) || this.getSolved() != obj.getSolved())
             {
                 return false;
             }

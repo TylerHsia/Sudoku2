@@ -122,7 +122,7 @@ namespace TestProject
                 //bruteForceSolver(mySudoku);
 
                 //if unsolved
-                if (!sudokuSolver.solved(mySudoku, false))
+                if (!sudokuSolver.IsSolved(mySudoku, false))
                 {
                     solvedAll = false;
                     TestContext.WriteLine("More work on " + i);
@@ -147,7 +147,7 @@ namespace TestProject
         {
             //1 to 23, inclusive
             //23 broke
-            for (int i = 23; i <= 23; i++)
+            for (int i = 1; i <= 23; i++)
             {
                 SudokuLogic.SudokuSolver sudokuSolver = new SudokuLogic.SudokuSolver();
                 SudokuLogic.sudokCell sudokCell = new SudokuLogic.sudokCell();
@@ -201,11 +201,23 @@ namespace TestProject
 
 
             sudokuSolver.bruteForceSolver(ref mySudoku);
-            Assert.IsTrue(sudokuSolver.solved(mySudoku), "Brute force did not solve it");
+            Assert.IsTrue(sudokuSolver.IsSolved(mySudoku), "Brute force did not solve it");
 
             
         }
 
+
+        [TestMethod]
+        public void TestSudokuGridCopy()
+        {
+            SudokuGrid myGrid1 = new SudokuGrid();
+            myGrid1[0, 0].solve(1);
+
+            SudokuGrid myGrid2 = new SudokuGrid();
+            myGrid2[0, 0].solve(1);
+
+            Assert.IsTrue(myGrid1.Equals(myGrid2));
+        }
         /*
         [TestMethod]
         public void OverFlowException()

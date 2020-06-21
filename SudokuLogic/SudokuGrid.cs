@@ -39,6 +39,13 @@ namespace SudokuLogic
         public SudokuGrid()
         {
             cells = new sudokCell[9, 9];
+            for(int row = 0; row < 9; row++)
+            {
+                for(int column = 0; column < 9; column++)
+                {
+                    this[row, column] = new sudokCell();
+                }
+            }
         }
 
         
@@ -80,7 +87,7 @@ namespace SudokuLogic
 
             SolveForIsValid();
             //if simple solve, return is valid
-            if (sudokuSolver.solved(this))
+            if (sudokuSolver.IsSolved(this))
             {
                 return true;
             }
@@ -90,7 +97,7 @@ namespace SudokuLogic
             SudokuGrid copy1 = sudokuSolver.Copy(this);
             sudokuSolver.bruteForceSolver(ref copy1);
 
-            if (!sudokuSolver.solved(copy1))
+            if (!sudokuSolver.IsSolved(copy1))
             {
                 return false;
             }
@@ -101,6 +108,7 @@ namespace SudokuLogic
             }
 
             SudokuGrid firstSolve = new SudokuGrid();
+            firstSolve = sudokuSolver.Copy(copy1);
 
             //else, guess all possibles and brute force solve. if multiple solutions, return false
             for (int row = 0; row < 9; row++)
@@ -127,7 +135,7 @@ namespace SudokuLogic
                             {
                                 //brute force it
                                 sudokuSolver.bruteForceSolver(ref copy);
-                                solvedThisOne = sudokuSolver.solved(copy);
+                                solvedThisOne = sudokuSolver.IsSolved(copy);
                             }
                             catch
                             {
@@ -140,6 +148,10 @@ namespace SudokuLogic
                                 try
                                 {
                                     if (!firstSolve.ToString().Equals(copy.ToString()))
+                                    {
+                                        //return false;
+                                    }
+                                    if (!sudokuSolver.Equals(firstSolve, copy))
                                     {
                                         return false;
                                     }
