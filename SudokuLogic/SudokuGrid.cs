@@ -82,7 +82,7 @@ namespace SudokuLogic
             
             if(this.NumSolved() < 16)
             {
-                //return false;
+                return false;
             }
 
             SolveForIsValid();

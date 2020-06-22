@@ -15,6 +15,7 @@ namespace TylerSudoku
     public partial class Form1 : Form
     {
         private TextBox infoBox;
+        private TextBox HintDisplay = new TextBox();
 
         public Form1()
         {
@@ -73,8 +74,10 @@ namespace TylerSudoku
             infoBox.ReadOnly = true;
             infoBox.TabStop = false;
             infoBox.Left = 100;
-            
 
+            this.Controls.Add(HintDisplay);
+            HintDisplay.Left = this.Width - 200;
+            HintDisplay.Width = 180;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -150,6 +153,35 @@ namespace TylerSudoku
             {
                 infoBox.Text = "the sudoku inputted was invalid";
             }
+        }
+
+        public SudokuGrid GetGrid()
+        {
+            var cellArray = this.Controls.OfType<MyCellBox>().ToList();
+            SudokuSolver sudokuSolver = new SudokuSolver();
+            int[,] intSudokuGrid = new int[9, 9];
+            for (int row = 0; row < 9; row++)
+            {
+                for (int column = 0; column < 9; column++)
+                {
+                    if (sudokuSolver.isDigit(cellArray[row * 9 + column].Text))
+                    {
+                        intSudokuGrid[row, column] = int.Parse(cellArray[row * 9 + column].Text);
+                    }
+                    //intSudokuGrid[row, column] = int.Parse(cellArray[row * 9 + column].Text);
+                }
+            }
+            SudokuGrid mySudoku = new SudokuGrid();
+            mySudoku = sudokuSolver.FromIntArray(intSudokuGrid);
+            return mySudoku;
+        }
+
+        private void Hint_Click(object sender, EventArgs e)
+        {
+            SudokuHinter sudokuHinter = new SudokuHinter();
+            Hint myHint = new Hint();
+            myHint.Text = "invalid";
+            HintDisplay.Text = myHint.Text;// sudokuHinter.GetHint(GetGrid()).ToString();
         }
     }
 
