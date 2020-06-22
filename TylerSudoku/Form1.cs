@@ -157,17 +157,60 @@ namespace TylerSudoku
     public class MyCellBox : TextBox
     {
         private Form1 form1;
-        private int xCoord;
-        private int yCoord;
+        private int column;
+        private int row;
         //constructor 
         public MyCellBox(Form1 form1, int i, int j)
         {
             this.form1 = form1;
-            this.xCoord = j;
-            this.yCoord = i;
+            this.column = j;
+            this.row = i;
             this.MaxLength = 1;
         }
 
+        protected override void OnTextChanged(EventArgs e)
+        {
+            SudokuSolver sudokuSolver = new SudokuSolver();
+            base.OnTextChanged(e);
+            SudokuGrid mySudoku = CurrentGrid();
+            
+            if (sudokuSolver.InvalidCell(mySudoku, this.row, this.column))
+            {
+                this.BackColor = Color.Red;
+            }
+            else
+            {
+                this.BackColor = Color.White;
+            }
+        }
+
+        //returns current sudokuGrid
+        public SudokuGrid CurrentGrid()
+        {
+            var cellArray = form1.Controls.OfType<MyCellBox>().ToList();
+            //if invalid cell, make cell red
+            //SudokuSolver sudokuSolver = new SudokuSolver();
+            //var cellArray = this.Controls.OfType<MyCellBox>().ToList();
+            SudokuSolver sudokuSolver = new SudokuSolver();
+            int[,] intSudokuGrid = new int[9, 9];
+            for (int row = 0; row < 9; row++)
+            {
+                for (int column = 0; column < 9; column++)
+                {
+
+
+                    if (sudokuSolver.isDigit(cellArray[row * 9 + column].Text))
+                    {
+                        intSudokuGrid[row, column] = int.Parse(cellArray[row * 9 + column].Text);
+                    }
+                    //intSudokuGrid[row, column] = int.Parse(cellArray[row * 9 + column].Text);
+                }
+            }
+            SudokuGrid mySudoku = new SudokuGrid();
+
+            mySudoku = sudokuSolver.FromIntArray(intSudokuGrid);
+            return mySudoku;
+        }
         //key up event
         protected override void OnKeyUp(KeyEventArgs e)
         {
@@ -183,7 +226,7 @@ namespace TylerSudoku
                 if (sudokuSolver.isDigit(this.Text))
                 {
                     //if last cell, tab to top
-                    if (xCoord == 8 && yCoord == 8)
+                    if (column == 8 && row == 8)
                     {
                         //var array = form1.Controls.OfType<MyCellBox>().ToArray();
                         cellArray[0].Select();
@@ -251,6 +294,7 @@ namespace TylerSudoku
                 }
                 this.SelectAll();
             }
+            
         }
 
         

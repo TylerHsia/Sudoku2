@@ -1362,6 +1362,59 @@ namespace SudokuLogic
             return false;
         }
 
+        public bool InvalidCell(SudokuGrid mySudoku, int row, int column)
+        {
+            //check columns for duplicates 
+            
+                
+            for (int row2 = 0; row2 < 9; row2++)
+            {
+                if (mySudoku[row2, column].getSolved())
+                {
+                    if(row2 != row && mySudoku[row2, column].getVal() == mySudoku[row, column].getVal())
+                    {
+                        return true;
+                    }
+                }
+            }
+            
+
+            //check rows for duplicates
+            
+            for (int column2 = 0; column2 < 9; column2++)
+            {
+                if (mySudoku[row, column2].getSolved())
+                {
+                    if (column2 != column && mySudoku[row, column2].getVal() == mySudoku[row, column].getVal())
+                    {
+                        return true;
+                    }
+                }
+            }
+            
+
+            //in box
+            
+            int boxRow = row / 3;
+            int boxColumn = column / 3;
+            //for each row in the small box
+            for (int row2 = boxRow * 3; row2 < boxRow * 3 + 3; row2++)
+            {
+                //for each column in the small box
+                for (int column2 = boxColumn * 3; column2 < boxColumn * 3 + 3; column2++)
+                {
+                    if (mySudoku[row2, column2].getSolved())
+                    {
+                        if (column2 != column && row2 != row && mySudoku[row2, column2].getVal() == mySudoku[row, column].getVal())
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
         //checks if a List contains a duplicate ovre the domain [1, 9]
         public bool ContainsDuplicate(List<int> myList)
         {
