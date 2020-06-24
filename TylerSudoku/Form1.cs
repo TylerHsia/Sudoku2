@@ -118,6 +118,7 @@ namespace TylerSudoku
 
         private void solveGrid_Click(object sender, EventArgs e)
         {
+
             SudokuSolver sudokuSolver = new SudokuSolver();
             var cellArray = this.Controls.OfType<MyCellBox>().ToList();
             int[,] intSudokuGrid = new int[9, 9];
@@ -140,13 +141,19 @@ namespace TylerSudoku
             
             mySudoku = sudokuSolver.FromIntArray(intSudokuGrid);
 
-            if (mySudoku.IsValid())
+
+            if (mySudoku.IsSolved())
+            {
+                infoBox.Text = "the sudoku inputted is already solved";
+            }
+
+            else if (mySudoku.IsValid())
             {
                 sudokuSolver.Solve(mySudoku, true);
 
                 for (int i = 0; i < cellArray.Count; i++)
                 {
-                    cellArray[i].Text = "" + mySudoku[i / 9, i % 9].toStringWithoutCands();
+                    cellArray[i].Text = "" + mySudoku[i / 9, i % 9].ToStringVal();
                 }
             }
             else
@@ -191,7 +198,7 @@ namespace TylerSudoku
             var cellArray = this.Controls.OfType<MyCellBox>().ToList();
             for(int i = 0; i < cellArray.Count; i++)
             {
-                cellArray[i].Text = mySudoku[i / 9, i % 9].toStringWithoutCands();
+                cellArray[i].Text = mySudoku[i / 9, i % 9].ToStringVal();
             }
         }
     }

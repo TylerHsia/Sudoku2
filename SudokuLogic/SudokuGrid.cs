@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
 
@@ -79,7 +80,13 @@ namespace SudokuLogic
         public bool IsValid()
         {
             SudokuSolver sudokuSolver = new SudokuSolver();
-            
+
+            if (sudokuSolver.IsSolved(this))
+            {
+                return true;
+            }
+
+
             if(this.NumSolved() < 16)
             {
                 return false;
@@ -171,6 +178,82 @@ namespace SudokuLogic
             }
             return true;
             
+        }
+
+        public bool IsSolved()
+        {
+            SudokuSolver sudokuSolver = new SudokuSolver();
+            //checks each box is solved
+            for (int row = 0; row < 9; row++)
+            {
+                for (int column = 0; column < 9; column++)
+                {
+                    //if unsolved, return false
+                    if (!this[row, column].getSolved())
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            //two for loops to go through each row, check no duplicates
+            for (int row = 0; row < 9; row++)
+            {
+                var myList = new List<int>();
+                int numTotal = 0;
+                for (int column = 0; column < 9; column++)
+                {
+                    myList.Add(this[row, column].getVal());
+                }
+                if (sudokuSolver.ContainsDuplicate(myList))
+                {
+                    return false;
+                }
+            }
+
+            //if(printChecks) System.out.println("Rows add up");        
+            //two for loops to go through each column, check no duplicates
+            for (int column = 0; column < 9; column++)
+            {
+                var myList = new List<int>();
+                int numTotal = 0;
+                for (int row = 0; row < 9; row++)
+                {
+                    myList.Add(this[row, column].getVal());
+                }
+                if (sudokuSolver.ContainsDuplicate(myList))
+                {
+                    return false;
+                }
+            }
+            //if(printChecks) System.out.println("Columns add up");
+
+            //check each box, check no duplicates 
+            //for each box row
+            for (int boxRow = 0; boxRow < 3; boxRow++)
+            {
+                //for each box column
+                for (int boxColumn = 0; boxColumn < 3; boxColumn++)
+                {
+                    var myList = new List<int>();
+                    int numTotal = 0;
+                    //for each row in the small box
+                    for (int row2 = boxRow * 3; row2 < boxRow * 3 + 3; row2++)
+                    {
+                        //for each column in the small box
+                        for (int column2 = boxColumn * 3; column2 < boxColumn * 3 + 3; column2++)
+                        {
+                            myList.Add(this[row2, column2].getVal());
+                        }
+                    }
+                    if (sudokuSolver.ContainsDuplicate(myList))
+                    {
+                        return false;
+                    }
+                }
+            }
+            //if(printChecks) System.out.println("Boxes add up");
+            return true;
         }
 
         public bool Equals(SudokuGrid obj)

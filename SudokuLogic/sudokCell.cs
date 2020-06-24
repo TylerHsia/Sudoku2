@@ -206,5 +206,29 @@ namespace SudokuLogic
             }
             return true;
         }
+
+        public string ToStringVal()
+        {
+            if(this.getSolved())
+            {
+                if (isDigit(this.getVal()))
+                {
+                    return "" + this.getVal();
+                }
+            }
+            return "";
+        }
+
+        public bool isDigit(int x)
+        {
+            for(int i = 1; i <= 9; i++)
+            {
+                if(x == i)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
