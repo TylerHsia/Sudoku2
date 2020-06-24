@@ -26,6 +26,8 @@ namespace SudokuLogic
         
         
         public sudokCell[,] cells;
+
+
         public sudokCell this[int row, int col]
         {
             get
@@ -37,6 +39,7 @@ namespace SudokuLogic
                 cells[row, col] = value;
             }
         }
+
         public SudokuGrid()
         {
             cells = new sudokCell[9, 9];
@@ -77,9 +80,14 @@ namespace SudokuLogic
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Checks whether a given SudokuGrid is valid
+        /// </summary>
+        /// <returns></returns>
         public bool IsValid()
         {
             SudokuSolver sudokuSolver = new SudokuSolver();
+            SudokuGrid mySudoku = sudokuSolver.Copy(this);
 
             if (sudokuSolver.IsSolved(this))
             {
@@ -92,9 +100,9 @@ namespace SudokuLogic
                 return false;
             }
 
-            SolveForIsValid();
+            mySudoku.SolveForIsValid();
             //if simple solve, return is valid
-            if (sudokuSolver.IsSolved(this))
+            if (sudokuSolver.IsSolved(mySudoku))
             {
                 return true;
             }
