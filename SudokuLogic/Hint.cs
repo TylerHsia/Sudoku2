@@ -37,6 +37,12 @@ namespace SudokuLogic
             hintCoord = newHintCoord;
         }
 
+        public Hint(int row, int column)
+        {
+            hintCoord = new Coordinate(row, column);
+
+        }
+
         public override string ToString()
         {
             return text;

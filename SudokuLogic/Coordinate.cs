@@ -41,13 +41,13 @@ namespace SudokuLogic
 
         public override string ToString()
         {
-            return "(" + IntToLetter(row) + ", " + column;
+            return "(" + IntToLetter(row) + ", " + (column + 1) + ")";
         }
 
         public string IntToLetter(int x)
         {
             string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            return alphabet.Substring(x + 1, 1);
+            return alphabet.Substring(x, 1);
         }
     }
 }

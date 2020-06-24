@@ -17,9 +17,12 @@ namespace SudokuLogic
     {
         public Hint GetHint(SudokuGrid mySudoku)
         {
+            SudokuSolver sudokuSolver = new SudokuSolver();
             Hint myHint = new Hint();
+
+            SudokuGrid Copy = sudokuSolver.Copy(mySudoku);
             //if invalid
-            if (!mySudoku.IsValid())
+            if (!Copy.IsValid())
             {
                 myHint.Text = "This Sudoku is invalid";
                 return myHint;
@@ -31,8 +34,11 @@ namespace SudokuLogic
                 return myHint;
             }
 
-            BoxHinter(mySudoku);
-
+            myHint = BoxHinter(mySudoku);
+            if (!myHint.VoidCoord())
+            {
+                return myHint;
+            }
 
             myHint.Text = "no hint found due to solver limitations, remainder solved with brute force";
             return myHint;
@@ -77,9 +83,9 @@ namespace SudokuLogic
                                     }
                                     //checkerMethodOneWorks = true;
                                     //checkerMethodOneWorks = 
-                                    RookHinter(mySudoku);
+                                    //RookHinter(mySudoku);
                                     //checkerMethodOneWorks = 
-                                    BoxHinter(mySudoku);
+                                    //BoxHinter(mySudoku);
                                 }
                             }
                         }
@@ -105,9 +111,9 @@ namespace SudokuLogic
 
                                     //checkerMethodOneWorks = true;
                                     //RookHinterWorks = 
-                                    RookHinter(mySudoku);
+                                    //returnHint = RookHinter(mySudoku);
                                     //RookHinterWorks = 
-                                    BoxHinter(mySudoku);
+                                    //returnHint = BoxHinter(mySudoku);
                                 }
                             }
                         }
@@ -118,9 +124,10 @@ namespace SudokuLogic
         }
 
         //eliminates by checking 3 by 3 boxes
-        public bool BoxHinter(SudokuGrid mySudoku)
+        public Hint BoxHinter(SudokuGrid mySudoku)
         {
             bool boxCheckerWorks = false;
+            Hint returnHint = new Hint();
 
             //for each solved cell in main array
             for (int row = 0; row < 9; row++)
@@ -148,11 +155,12 @@ namespace SudokuLogic
                                     if (index != -1)
                                     {
                                         mySudoku[row2, column2].RemoveAt(index);
-                                        //boxCheckerWorks = true;
-                                        //boxCheckerWorks = 
-                                        BoxHinter(mySudoku);
-                                        //boxCheckerWorks = 
-                                        RookHinter(mySudoku);
+                                        if (mySudoku[row, column2].getSolved())
+                                        {
+                                            returnHint = new Hint(new Coordinate(row, column2));
+                                            returnHint.Text = "Naked single at " + new Coordinate(row, column2);
+                                            return returnHint;
+                                        }
                                     }
                                 }
                             }
@@ -160,7 +168,7 @@ namespace SudokuLogic
                     }
                 }
             }
-            return boxCheckerWorks;
+            return returnHint;
         }
 
         //check if candidate is only candidate in one spot in a row or column
@@ -837,7 +845,8 @@ namespace SudokuLogic
                             if (removedACandidate)
                             {
                                 candidateLinesCheckerWorks = true;
-                                candidateLinesCheckerWorks = BoxHinter(mySudoku);
+                                //candidateLinesCheckerWorks = 
+                                BoxHinter(mySudoku);
                                 RookHinter(mySudoku);
                             }
                         }
