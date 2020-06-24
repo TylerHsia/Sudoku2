@@ -1,21 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace SudokuLogic
 {
-    public class Coordinate
-    {
-        private int row;
-        private int column;
-
-        public Coordinate(int rowInput, int columnInput)
-        {
-            row = rowInput;
-            column = columnInput;
-        }
-    }
+    
 
     public class CoordinateList
     {
@@ -34,19 +25,28 @@ namespace SudokuLogic
                 return myHint;
             }
             //generate cands
-            RookHinter(mySudoku);
+            myHint = RookHinter(mySudoku);
+            if (!myHint.VoidCoord())
+            {
+                return myHint;
+            }
+
             BoxHinter(mySudoku);
 
+
+            myHint.Text = "no hint found due to solver limitations, remainder solved with brute force";
             return myHint;
         }
 
 
 
 
+
+
         //eliminates by rook method
-        public Coordinate RookHinter(SudokuGrid mySudoku)
+        public Hint RookHinter(SudokuGrid mySudoku)
         {
-            bool RookHinterWorks = false;
+            Hint returnHint = new Hint();
 
             //two for loops to go through each element in mySudoku
             for (int row = 0; row < 9; row++)
@@ -71,7 +71,9 @@ namespace SudokuLogic
                                     mySudoku[row2, column].RemoveAt(index);
                                     if (mySudoku[row2, column].getSolved())
                                     {
-                                        return new Coordinate(row2, column);
+                                        returnHint = new Hint(new Coordinate(row2, column));
+                                        returnHint.Text = "Naked single at " + new Coordinate(row2, column);
+                                        return returnHint;
                                     }
                                     //checkerMethodOneWorks = true;
                                     //checkerMethodOneWorks = 
@@ -94,9 +96,11 @@ namespace SudokuLogic
                                 if (index != -1)
                                 {
                                     mySudoku[row, column2].RemoveAt(index);
-                                    if(mySudoku[row, column2].getSolved())
+                                    if (mySudoku[row, column2].getSolved())
                                     {
-                                        return new Coordinate(row, column2);
+                                        returnHint = new Hint(new Coordinate(row, column2));
+                                        returnHint.Text = "Naked single at " + new Coordinate(row, column2);
+                                        return returnHint;
                                     }
 
                                     //checkerMethodOneWorks = true;
@@ -110,7 +114,7 @@ namespace SudokuLogic
                     }
                 }
             }
-            return new Coordinate(-1, -1);
+            return new Hint();
         }
 
         //eliminates by checking 3 by 3 boxes

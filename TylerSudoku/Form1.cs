@@ -181,7 +181,18 @@ namespace TylerSudoku
             SudokuHinter sudokuHinter = new SudokuHinter();
             Hint myHint = new Hint();
             myHint.Text = "invalid";
-            HintDisplay.Text = myHint.Text;// sudokuHinter.GetHint(GetGrid()).ToString();
+            HintDisplay.Text = sudokuHinter.GetHint(GetGrid()).Text;
+        }
+
+        private void populate_Click(object sender, EventArgs e)
+        {
+            SudokuSolver sudokuSolver = new SudokuSolver();
+            SudokuGrid mySudoku = sudokuSolver.FromIntArray(sudokuSolver.input(1));
+            var cellArray = this.Controls.OfType<MyCellBox>().ToList();
+            for(int i = 0; i < cellArray.Count; i++)
+            {
+                cellArray[i].Text = mySudoku[i / 9, i % 9].toStringWithoutCands();
+            }
         }
     }
 
