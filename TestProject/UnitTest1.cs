@@ -18,7 +18,7 @@ namespace TestProject
 
         public TestContext TestContext { get; set; }
 
-        
+
         public void testFoobar()
         {
             var x = new SudokuGrid();
@@ -26,7 +26,30 @@ namespace TestProject
 
         }
 
-        
+        [TestMethod]
+        public void TestRateDifficulty()
+        {
+            SudokuSolver sudokuSolver = new SudokuSolver();
+            for (int i = 1; i <= NumStoredSudokus; i++)
+            {
+                SudokuLogic.sudokCell sudokCell = new SudokuLogic.sudokCell();
+                //inputted sudoku
+                int[,] sudokuInputted = input(i);
+
+                SudokuGrid mySudoku = new SudokuGrid();
+
+                //my sudoku to be worked with
+                for (int row = 0; row < 9; row++)
+                {
+                    for (int column = 0; column < 9; column++)
+                    {
+                        mySudoku[row, column] = new sudokCell(sudokuInputted[row, column]);
+                    }
+                }
+
+                TestContext.WriteLine($"the level of {i} is {sudokuSolver.RateDifficulty(mySudoku)}");
+            }
+        }
 
         [TestMethod]
         public void TestMethod1()

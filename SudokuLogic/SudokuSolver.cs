@@ -393,12 +393,13 @@ namespace SudokuLogic
                                                 //remove that possibility from the other cell
                                                 //printBoard(mySudoku, true);
                                                 mySudoku[row2, column2].RemoveAt(mySudoku[row2, column2].indexOf(mySudoku[row, column].getVal(possibleIndex)));
+                                                candidatePairBoxCheckerWorks = true;
                                             }
                                         }
                                     }
                                 }
                             }
-                            candidatePairBoxCheckerWorks = true;
+                            
                             //candidatePairBoxCheckerWorks = 
                             RookChecker(mySudoku);
                             //candidatePairBoxCheckerWorks = 
@@ -1684,6 +1685,122 @@ namespace SudokuLogic
             }
             return true;
         }
+
+        public int RateDifficulty(SudokuGrid mySudoku)
+        {
+            //level 1
+            bool currentWorks = true;
+            RookChecker(mySudoku);
+            BoxChecker(mySudoku);
+            if (mySudoku.IsSolved())
+            {
+                return 1;
+            }
+
+
+            //level 2
+            while (currentWorks)
+            {
+                currentWorks = OnlyCandidateLeftRookChecker(mySudoku);
+                if (!currentWorks)
+                {
+                    currentWorks = OnlyCandidateLeftBoxChecker(mySudoku);
+                }
+            }
+            if (mySudoku.IsSolved())
+            {
+                return 2;
+            }
+
+
+            //level 3
+            currentWorks = true;
+            while (currentWorks)
+            {
+                currentWorks = NakedCandidateRookChecker(mySudoku);
+                if (!currentWorks)
+                {
+                    currentWorks = NakedCandidateBoxChecker(mySudoku);
+                }
+                if (!currentWorks)
+                {
+                    currentWorks = OnlyCandidateLeftRookChecker(mySudoku);
+                }
+                if (!currentWorks)
+                {
+                    currentWorks = OnlyCandidateLeftBoxChecker(mySudoku);
+                }
+            }
+            if (mySudoku.IsSolved())
+            {
+                return 3;
+            }
+
+
+            //level 4
+            currentWorks = true;
+            while (currentWorks)
+            {
+                currentWorks = CandidateLinesChecker(mySudoku);
+                if (!currentWorks)
+                {
+                    HiddenCandidatePairChecker(mySudoku);
+                }
+                if (!currentWorks)
+                {
+                    pointingPairRookToBoxChecker(mySudoku);
+                }
+                if (!currentWorks)
+                {
+                    currentWorks = NakedCandidateRookChecker(mySudoku);
+                }
+                if (!currentWorks)
+                {
+                    currentWorks = NakedCandidateBoxChecker(mySudoku);
+                }
+                if (!currentWorks)
+                {
+                    currentWorks = OnlyCandidateLeftRookChecker(mySudoku);
+                }
+                if (!currentWorks)
+                {
+                    currentWorks = OnlyCandidateLeftBoxChecker(mySudoku);
+                }
+            }
+            if (mySudoku.IsSolved())
+            {
+                return 4;
+            }
+
+
+            //level 5
+            Solve(mySudoku, true);
+            if (mySudoku.IsSolved())
+            {
+                return 5;
+            }
+
+
+            //level 6
+            bruteForceSolver(ref mySudoku);
+            if (mySudoku.IsSolved())
+            {
+                return 6;
+            }
+
+            return 7;
+        }
+        /*
+         * RookChecker(mySudoku);
+                BoxChecker(mySudoku);
+                OnlyCandidateLeftRookChecker(mySudoku);
+                OnlyCandidateLeftBoxChecker(mySudoku);
+                NakedCandidateRookChecker(mySudoku);
+                NakedCandidateBoxChecker(mySudoku);
+                CandidateLinesChecker(mySudoku);
+                HiddenCandidatePairChecker(mySudoku);
+                pointingPairRookToBoxChecker(mySudoku);
+        */
 
         //gives sudoku from list of possibles
         public int[,] input(int x)
