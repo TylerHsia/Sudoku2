@@ -74,6 +74,7 @@ namespace TylerSudoku
             infoBox.ReadOnly = true;
             infoBox.TabStop = false;
             infoBox.Left = 100;
+            infoBox.Width = 400;
 
             this.Controls.Add(HintDisplay);
             HintDisplay.Left = this.Width - 200;
@@ -199,6 +200,26 @@ namespace TylerSudoku
             for(int i = 0; i < cellArray.Count; i++)
             {
                 cellArray[i].Text = mySudoku[i / 9, i % 9].ToStringVal();
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            MyCellBox myCellBox = new MyCellBox(this, 100, 100);
+            SudokuSolver sudokuSolver = new SudokuSolver();
+            SudokuGrid mySudoku = myCellBox.CurrentGrid();
+            if (mySudoku.IsValid())
+            {
+                int difficulty = sudokuSolver.RateDifficulty(mySudoku);
+                infoBox.Text = $"Current sudoku is {difficulty} stars";
+                if(difficulty == 6)
+                {
+                    infoBox.Text = "Current sudoku was solved with brute force";
+                }
+            }
+            else
+            {
+                infoBox.Text = "Current Sudoku is invalid";
             }
         }
     }
