@@ -1688,6 +1688,10 @@ namespace SudokuLogic
 
         public int RateDifficulty(SudokuGrid mySudoku)
         {
+            if (!mySudoku.IsValid())
+            {
+                return 0;
+            }
             //level 1
             bool currentWorks = true;
             RookChecker(mySudoku);
